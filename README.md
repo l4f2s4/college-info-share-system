@@ -1,5 +1,7 @@
 # college-info-share-system
-Is a symfony system which can help college to share information rom one department to another and can help them to keep records in digital way.
+
+Is a symfony system which can help college to share information from one department to another and can help them to keep records in digital way.
+
 symfony command
 ---
 use composer install to install used package
