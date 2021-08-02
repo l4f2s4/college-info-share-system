@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <!--if start-->
+     {% if app.user %}
+		{% include('security/usernavbar.html.twig') %}
+<!-- Page Wrapper -->
+            <div class="page-wrapper">
+
+				<!-- Page Content -->
+                <div class="content container-fluid">
+
+					<!-- Page Header -->
+					<div class="page-header" style="padding-top:20px; ">
+						<div class="row">
+							<div class="col">
+								<h3 class="page-title">Leave Type</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item">Dashboard</li>
+									<li class="breadcrumb-item active">Leave Type</li>
+								</ul>
+							</div>
+							<div class="col-auto float-right ml-auto">
+								<a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_leavetype"><i class="fa fa-plus"></i> Add Leave type</a>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+
+                   <div class="row">
+						<div class="col-md-12">
+							<div class="table-responsive">
+								<table id="zero_config" class="table table-striped custom-table datatable mb-0">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Leave Type</th>
+											<th>Leave Days</th>
+											<th>Leaves Chances</th>
+											<th>Remain Chances</th>
+											<th>Status</th>
+											<th class="text-right">Action</th>
+										</tr>
+									</thead>
+									<tbody>
+									 {% for temp,lead in findleavestype %}
+										<tr>
+											<td>{{ temp + 1 }}</td>
+											<td>{{ lead.name }}</td>
+											<td>{{ lead.ldays }}</td>
+											<td>{{ lead.lchance }}</td>
+											<td>{{ lead.lrem }}</td>
+											<td>
+												      {% if lead.lstatus=='active' %}
+														<a class="btn btn-white btn-sm"><i class="fa fa-dot-circle-o text-success"></i> {{ lead.lstatus }}</a>
+												      {% else %}
+														<a class="btn btn-white btn-sm"><i class="fa fa-dot-circle-o text-danger"></i> {{ lead.lstatus }}</a>
+													  {% endif %}
+											</td>
+											<td class="text-right">
+														<a  href="#" ><i class="fa fa-pencil m-r-5" style="color:darkorange;"></i></a>
+														<a  href="#" data-bs-toggle="modal" data-bs-target="#delete_leavetype"><i class="fa fa-trash-o m-r-5" style="color: red;"></i> </a>
+											</td>
+										</tr>
+										 	<!-- Delete Leavetype Modal -->
+							<div class="modal custom-modal fade" id="delete_leavetype" role="dialog">
+								<div class="modal-dialog modal-dialog-centered">
+									<div class="modal-content">
+										<div class="modal-body">
+											<div class="form-header">
+												<h3>Delete Leave Type</h3>
+												<p>Are you sure want to delete?</p>
+											</div>
+											<div class="modal-btn delete-action">
+												<div class="row">
+													<div class="col-6">
+														<a href="/remove/type/{{ lead.id }}" class="btn btn-primary continue-btn">Delete</a>
+													</div>
+													<div class="col-6">
+														<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /Delete Leavetype Modal -->
+									 {% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+                </div>
+				<!-- /Page Content -->
+
+				<!-- Add Leavetype Modal -->
+				<div id="add_leavetype" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Add Leave Type</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								  {% for messages in app.flashes('leaves') %}
+                                                   <div class="offset-2" style="padding-bottom: 2%;">
+                                                   <span style="color:red;">
+                                                     {{ messages }}
+                                                   </span>
+                                                             </div>
+                                               {% endfor %}
+								<form method="post">
+									<div class="form-group">
+										<label>Leave Type <span class="text-danger">*</span></label>
+										<input class="form-control" type="text" name="lname">
+									</div>
+									<div class="form-group">
+										<label>Number of days <span class="text-danger">*</span></label>
+										<input class="form-control" type="text" name="lday">
+									</div>
+									<div class="form-group">
+										<label>Leave Chances <span class="text-danger">*</span></label>
+										<input class="form-control" type="text" name="lchance">
+									</div>
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Add Leavetype Modal -->
+
+                </div>
+				<!-- /Page Content -->
+			</div>
+
+<script>
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable();
+    </script>
+
+    {% endif %}
+    <!-- end if-->
+
+{% endblock %}

@@ -1,0 +1,212 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if app.user %}
+        {% include('college/usernavbar.html.twig') %}
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+                <div class="page-header" style="padding-top:40px; ">
+						<div class="row">
+							<div class="col-md-12">
+							<div class="welcome-box">
+								<div class="welcome-img">
+								  {% if  app.user.userimage| length !=0 %}
+                                       <img src="{{ asset('/web/uploads/photos/' ~ app.user.userimage) }}" alt=""  />
+                                   {% else %}
+                                       <img src="{{ asset('img/users.png') }}" alt=""/>
+                                   {% endif %}
+								</div>
+								<div class="welcome-det">
+									<h3>Welcome, {{ app.user.name }}</h3>
+									<p class="text-right">{{ display24  }}</p>
+									<p>{{ "now"|date("F, jS Y ")  }}</p>
+
+								</div>
+
+							</div>
+						</div>
+                        </div>
+                 </div>
+ 			  		<div class="row">
+						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+							<div class="card dash-widget">
+								<div class="card-body">
+									<span class="dash-widget-icon"><i class="fa fa-server"></i></span>
+									<div class="dash-widget-info">
+										<h3>{{ findproject }}</h3>
+										<span>Projects</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+							<div class="card dash-widget">
+								<div class="card-body">
+									<span class="dash-widget-icon"><i class="fa fa-user"></i></span>
+									<div class="dash-widget-info">
+										<h3>{{ findstaff }}</h3>
+										<span>Undergraduate Student</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+							<div class="card dash-widget">
+								<div class="card-body">
+									<span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+									<div class="dash-widget-info">
+										<h3>{{ findlist }}</h3>
+										<span>Staff</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+							<div class="card dash-widget">
+								<div class="card-body">
+									<span class="dash-widget-icon"><i class="fa fa-graduation-cap"></i></span>
+									<div class="dash-widget-info">
+										<h3>{{ findstudent }}</h3>
+										<span>Postgraduate Student</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+							<div class="card dash-widget">
+								<div class="card-body">
+									<span class="dash-widget-icon"><i class="fa fa-reddit"></i></span>
+									<div class="dash-widget-info">
+										<h3>{{ prog645 }}</h3>
+										<span>Programme Registered</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+							<div class="card dash-widget">
+								<div class="card-body">
+									<span class="dash-widget-icon"><i class="fa fa-registered"></i></span>
+									<div class="dash-widget-info">
+										<h3>{{ prog647 }}</h3>
+										<span>Course Registered</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="middle">
+						<div class="row">
+							<div class="col-md-6 col-lg-6 col-xl-4 d-flex">
+							<div class="card flex-fill">
+								<div class="card-body">
+									<h4 class="card-title"><span class="text-center">Today Absents</span>  <h5><span>approved </span> &nbsp;<span class="badge bg-success ml-1"  style="border-radius:25px;">{{ absent }}</span> &nbsp;pending <span class="badge bg-danger ml-1" style="border-radius:25px;">&nbsp;{{ pending }}</span></h5></h4>
+									{%if display124|length !=0 %}
+										{% for display in display124 %}
+									<div class="leave-info-box">
+										<div class="media align-items-center">
+											<a href="#" class="avatar">
+												<img src="{{ asset('/img/user.jpg') }}"/></a>
+											<div class="media-body">
+												<div class="mb-1">{{ display.Emp }}</div>
+											</div>
+										</div>
+										<div class="row align-items-center mt-3">
+											<div class="col-6">
+												<h6 class="mb-1">{{ display.FRM|date("F jS Y \\a\\t g:ia")  }}</h6>
+												<span class="text-sm text-muted">Leave Date</span>
+											</div>
+											<div class="col-6 text-right">
+												{% if display.ST == 'pending'%}
+												<h5 class="table-avatar">
+													<span class="badge bg-inverse-info">pending by</span>
+													<a href="#" class="avatar avatar-xs">
+														{% if  display.APPIMAGE| length !=0 %}
+											           <img src="{{ asset('/web/uploads/photos/' ~ display.APPIMAGE) }}"/>
+												{% else %}
+														<img src="{{ asset('img/users.png') }}"/>
+												{% endif %}
+													</a>
+
+												</h5>
+												{% else %}
+												<h5 class="table-avatar">
+													<span class="badge bg-inverse-success">approved by</span>
+													<a href="#" class="avatar avatar-xs">
+														{% if  display.APPIMAGE| length !=0 %}
+											           <img src="{{ asset('/web/uploads/photos/' ~ display.APPIMAGE) }}"/>
+												{% else %}
+														<img src="{{ asset('img/users.png') }}"/>
+												{% endif %}
+													</a>
+
+												</h5>
+												{% endif %}
+											</div>
+										</div>
+									</div>
+										{% endfor %}
+									<div class="load-more text-center">
+										<a class="text-dark" href="{{ path('leavesemployee') }}">Load More</a>
+									</div>
+									{% else %}
+									<div class="leave-info-box">
+										<span style="color: red;">no pending leave or approved leave requests.</span>
+									</div>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+							<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+								<div class="card dash-widget">
+                                    <div class="card-header">
+                                        <div class="card-title">Staff <span class="badge bg-success ml-1">{{ displaystaff|length }}</span></div>
+                                    </div>
+									{%if displaystaff|length !=0 %}
+                                        <div class="card-body">
+
+											{% for display21 in displaystaff %}
+                                                             <div class="card dash-widget">
+                                                            <div class="card-body">
+                                                                <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
+                                                                <div class="dash-widget-info">
+																    <h4><strong>{{ display21.name }}</strong></h4>
+                                                                </div>
+                                                            </div>
+						                </div>
+
+                                                   {% endfor %}
+
+
+                                        </div>
+										<div class="card-footer" style="text-align: center;">
+											<div class="load-more text-center">
+										<a class="text-dark" href="{{ path('dashboard') }}">View all staff</a>
+									      </div>
+									{% else %}
+										<span style="color: red;text-align: center;">no available staff had been registered click Add Staff to add one.</span>
+                                        <div class="card-footer" style="text-align: center;">
+											<div class="load-more text-center">
+										<a class="text-dark" href="{{ path('dashboard') }}">Add Staff</a>
+									      </div>
+										</div>
+									{% endif %}
+										</div>
+                                </div>
+                            </div>
+
+						</div>
+
+					</div>
+
+
+
+
+
+
+                </div>
+            </div>
+
+	{% endif %}
+{% endblock %}

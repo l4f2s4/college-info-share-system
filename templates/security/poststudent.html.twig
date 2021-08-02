@@ -1,0 +1,281 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if app.user %}
+        {% if app.user.title=='administrator' %}
+             {% include('security/usernavbar.html.twig') %}
+        {% elseif app.user.title == 'HoDs' %}
+             {% include('college/usernavbar.html.twig') %}
+         {% else %}
+             {% include('college/userstaff.html.twig') %}
+        {% endif %}
+            <div class="page-wrapper">
+                 <div class="content container-fluid">
+                   <div class="page-header" style="padding-top:20px; ">
+						<div class="row">
+							<div class="col">
+                                <h3 class="page-title">Postgraduate Student</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active">Postgraduate student</li>
+								</ul>
+							</div>
+                             {% if prove>=1 %}
+                              <div class="col-auto float-start  ml-auto">
+								<a href="{{ path('postpdf') }}" class="btn btn-success" style="color: white;" ><i class="fa fa-print"></i> Print List of Students</a>
+                             </div>
+                            {% endif %}
+                             {% if app.user.title !='staff' %}
+                                   <div class="col-auto float-right ml-auto">
+                                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myForm"><i class="fa fa-plus"></i> Add Student</a>
+                                     </div>
+                            {% endif %}
+                                 <!---START TEST--->
+                            <div class="alert col-md-5 col-lg-5 col-sm-12 col-xs-12 offset-4" style="background:green;">
+                               {% for messages in app.flashes('post') %}
+                                                   <div class="offset-2" style="padding-bottom:2%;">
+                                                   <span style="color:white;">
+                                                     {{ messages }}
+                                                   </span>
+                                                             </div>
+                                               {% endfor %}
+
+
+                            </div>
+                                    <div class="modal fade" id="myForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                              <div class="modal-dialog modal-lg" >
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel" style="padding-left:40%;">New Member</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body" >
+                                    <form method="post">
+                                      
+                                        <div class="row g-6" style="padding-bottom:3%;">
+                                          <div class="col" >
+                                                <label for="fname">First Name <span style="color:red;">*</span></label>
+                                                <input type="text" name="fname" class="form-control" placeholder="First name" aria-label="First name" id="inputGroup-sizing-default">
+                                          </div>
+                                          <div class="col">
+                                                <label for="lname">Last Name <span style="color:red;">*</span></label>
+                                                <input type="text" name="lname" class="form-control" placeholder="Last name" aria-label="Last name" id="inputGroup-sizing-default">
+                                          </div>
+                                        </div>
+                                        <div class="row g-6" style="padding-bottom:3%;">
+                                          <div class="col">
+                                                <label for="email">Email <span style="color:red;">*</span></label>
+                                                <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Email" id="inputGroup-sizing-default">
+                                          </div>
+                                          <div class="col">
+                                                <label for="phoneno">Phone No <span style="color:red;">*</span></label>
+                                                <input type="number" name="phoneno" class="form-control" placeholder="Phone no" aria-label="Phone" id="inputGroup-sizing-default">
+                                          </div>
+                                        </div>
+                                        <div class="row g-6" style="padding-bottom:3%;">
+                                          <div class="col">
+                                                 <label for="citizenship">Citizenship <span style="color:red;">*</span></label>
+                                                 <input type="text" name="citizen" class="form-control" placeholder="citezenship" aria-label="citezenship" id="inputGroup-sizing-default">
+                                          </div>
+                                             <div class="col">
+                                                 <label for="Gender">Gender <span style="color:red;">*</span></label>
+                                                 <select class="form-control" id="gender" name="gender">
+                                                            <option selected>Select Gender</option>
+                                                            <option value="male">Male</option>
+                                                            <option value="female">Female</option>
+                                                  </select>
+                                          </div>
+                                        </div>
+                                        <div class="row g-6" style="padding-bottom:3%;">
+
+                                              <div class="col">
+                                                 <label for="regno">Registration no <span style="color:red;">*</span></label>
+                                                 <input type="text" name="regno" class="form-control" placeholder="regno" aria-label="regno" id="inputGroup-sizing-default">
+                                          </div>
+                                          <div class="col">
+                                                     <label for="Department">Department</label>
+                                                      <select class="form-control" id="dept" name="dept">
+                                                            <option selected>Select Department</option>
+                                                           {% for dept in finddept %}
+                                                               {% if dept.name | length != 0 %}
+                                                            <option value="{{ dept.name }}">{{ dept.name }}</option>
+                                                               {% else %}
+                                                             <option value="">Ask administrator to add that department first</option>
+                                                               {% endif %}
+                                                            {% endfor %}
+                                                      </select>
+                                          </div>
+
+
+                                        </div>
+
+                                        <div class="row g-6" style="padding-bottom:3%;">
+                                             <div class="col">
+                                                     <label for="programme">Programme</label>
+                                                      <select class="form-control" id="programme" name="pname">
+                                                            <option selected>Select Programme</option>
+                                                           {% for dept in findProg %}
+                                                            <option value="{{ dept.name }}">{{ dept.name }}</option>
+                                                            {% endfor %}
+                                                      </select>
+                                                </div>
+                                              <div class="col">
+                                                 <label for="YoF">Year of Study<span style="color:red;">*</span></label>
+                                                 <input type="text" name="yos" class="form-control" placeholder="year of study" aria-label="regno" id="inputGroup-sizing-default">
+                                          </div>
+                                        </div>
+                                  <div class="modal-footer" style="padding-left:40%;justify-content: flex-start;">
+                                    <button type="submit" class="btn btn-block btn-warning" style="width:140px;height:40px;border-radius:30px;">Submit</button>
+                                  </div>
+                                      </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!--END TEST-->
+
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table id="zero_config" class="table table-striped custom-table custom-table datatable dataTable no-footer">
+                                                <thead >
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Reg No.</th>
+                                                        <th>Name</th>
+                                                        <th>Email</th>
+                                                         <th>Phone No.</th>
+                                                        <th>Gender</th>
+                                                        <th>Citizenship</th>
+                                                         <th>YoS</th>
+                                                         <th>Programme Name</th>
+                                                        {% if app.user.title == 'administrator' %}
+                                                               <th>Department</th>
+                                                         {% endif %}
+                                                         {% if app.user.title!='staff' %}
+                                                              <th>Action</th>
+                                                        {% endif %}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                     {% for temp,display in displaystaff %}
+                                                       {% if display.level == 'postgraduate' and display23== display.ID and ( app.user.title == 'staff' or app.user.title =='HoDs') %}
+                                                        <tr>
+                                                            <td>{{ temp + 1 }}</td>
+                                                            <td>{{ display.regno }}</td>
+                                                            <td>{{ display.name }}</td>
+                                                            <td>{{ display.email }}</td>
+                                                            <td>{{ display.phoneno }}</td>
+                                                            <td>{{ display.gender }}</td>
+                                                            <td>{{ display.citizenship }}</td>
+                                                            <td>{{ display.yo_s }}</td>
+                                                            <td>{{ display.PNAME }}</td>
+                                                            <td>
+                                                                {% if displaytest == 'administrator' or displaytest =='HoDs' %}
+                                                                  <a href="/student/post/area/{{ display.id }}/edit/name">
+                                                                    <i class="fa fa-edit font-18" style="color:darkorange;"></i>
+                                                                  </a>&nbsp;
+                                                                     <a  href="#" data-bs-toggle="modal" data-bs-target="#delete_promotion"><i class="fa fa-trash-o font-18" style="color:red;"></i></a>
+                                                                                          <!-- Delete Promotion Modal -->
+                                                        <div class="modal custom-modal fade" id="delete_promotion" role="dialog">
+                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-body">
+                                                                        <div class="form-header">
+                                                                            <h3>Delete Postgraduate Student</h3>
+                                                                            <p>Are you sure want to delete?</p>
+                                                                        </div>
+                                                                        <div class="modal-btn delete-action">
+                                                                            <div class="row">
+                                                                                <div class="col-6">
+                                                                                    <a href="/remove/undergraduate/student/available/just/{{ display.id }}" class="btn btn-primary continue-btn">Delete</a>
+                                                                                </div>
+                                                                                <div class="col-6">
+                                                                                    <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /Delete Promotion Modal -->
+                                                                {% endif %}
+                                                            </td>
+                                                        </tr>
+
+                                                        {% endif %}
+                                                        {% if display.level == 'postgraduate' and app.user.title == 'administrator' %}
+                                                        <tr>
+                                                            <td>{{ temp + 1 }}</td>
+                                                            <td>{{ display.regno }}</td>
+                                                            <td>{{ display.name }}</td>
+                                                            <td>{{ display.email }}</td>
+                                                            <td>{{ display.phoneno }}</td>
+                                                            <td>{{ display.gender }}</td>
+                                                            <td>{{ display.citizenship }}</td>
+                                                            <td>{{ display.yo_s }}</td>
+                                                            <td>{{ display.PNAME }}</td>
+                                                            <td>{{ display.department }}</td>
+                                                            <td>
+                                                                  <a href="/student/post/area/{{ display.id }}/edit/name">
+                                                                    <i class="fa fa-edit font-18" style="color:darkorange;"></i>
+                                                                  </a>
+                                                                &nbsp;
+                                                           <a  href="#" data-bs-toggle="modal" data-bs-target="#delete_promotion"><i class="fa fa-trash-o font-18" style="color:red;"></i></a>
+										                	</td>
+									                    </tr>
+                                                                                <!-- Delete Promotion Modal -->
+                                                        <div class="modal custom-modal fade" id="delete_promotion" role="dialog">
+                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-body">
+                                                                        <div class="form-header">
+                                                                            <h3>Delete Postgraduate Student</h3>
+                                                                            <p>Are you sure want to delete?</p>
+                                                                        </div>
+                                                                        <div class="modal-btn delete-action">
+                                                                            <div class="row">
+                                                                                <div class="col-6">
+                                                                                    <a href="/remove/postgraduate/student/available/just/{{ display.id }}" class="btn btn-primary continue-btn">Delete</a>
+                                                                                </div>
+                                                                                <div class="col-6">
+                                                                                    <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /Delete Promotion Modal -->
+                                                        {% endif %}
+                                                   {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+
+        <script>
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable();
+   //     $("[data-bs-toggle=popover]")
+//.popover({html:true})
+
+    </script>
+
+            {% endif %}
+{% endblock %}

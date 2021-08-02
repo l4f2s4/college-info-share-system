@@ -1,0 +1,71 @@
+framework:
+    rate_limiter:
+        # define 2 rate limiters (one for username+IP, the other for IP)
+        username_ip_login:
+            policy: token_bucket
+            limit: 5
+            rate: { interval: '5 minutes' }
+
+        ip_login:
+            policy: sliding_window
+            limit: 50
+            interval: '15 minutes'
+security:
+    #enable_authenticator_manager: true
+    access_denied_url: app_login
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: true
+            lazy: true
+           # login_throttling:
+              #  max_attempts: 3
+
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                username_parameter: "email"
+                password_parameter: "password"
+
+            provider: app_user_provider
+
+
+            guard:
+                authenticators:
+                    - App\Security\LoginAuthenticator
+                entry_point: App\Security\LoginAuthenticator
+            logout:
+                path: /logout
+                target: /
+                invalidate_session: false
+
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/admin/.*, roles: ROLE_ADMIN }
+        - { path: ^/hods/.*, roles: ROLE_HODS }
+        - { path: ^/member/.*, roles: ROLE_STAFF }
+
+
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_HODS

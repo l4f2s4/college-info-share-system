@@ -1,0 +1,189 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if app.user %}
+        {% include('college/userstaff.html.twig') %}
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+                   <div class="page-header" style="padding-top:40px; ">
+						<div class="row">
+							<div class="col-md-12">
+							<div class="welcome-box">
+								<div class="welcome-img" >
+								  {% if  app.user.userimage| length !=0 %}
+                                       <img src="{{ asset('/web/uploads/photos/' ~ app.user.userimage) }}" alt=""  />
+                                   {% else %}
+                                       <img src="{{ asset('img/users.png') }}" alt=""/>
+                                   {% endif %}
+								</div>
+								<div class="welcome-det">
+									<h3>Welcome, {{ app.user.name }}</h3>
+									<p class="text-right">{{ display24  }}</p>
+									<p>{{ "now"|date("F, jS Y ")  }}</p>
+								</div>
+
+							</div>
+						</div>
+                        </div>
+                 </div>
+ 					<div class="row">
+							<div class="col-lg-8 col-md-8">
+							<section class="dash-section">
+								<div class="dash-sec-content">
+									<div class="dash-info-list">
+										<a href="{{ path('postgraduate') }}" class="dash-card">
+											<div class="dash-card-container">
+												<div class="dash-card-icon">
+													<i class="fa fa-graduation-cap"></i>
+												</div>
+												<div class="dash-card-content">
+														<p>Postgraduate Student <span class="badge badge-info" style="border-radius: 20%;">{{ findstudent }}</span>
+													</p>
+												</div>
+											</div>
+										</a>
+									</div>
+									<div class="dash-info-list">
+										<a href="{{ path('undergraduate') }}" class="dash-card">
+											<div class="dash-card-container">
+												<div class="dash-card-icon">
+													<i class="fa fa-graduation-cap"></i>
+												</div>
+												<div class="dash-card-content">
+													<p>Undergraduate Student <span class="badge badge-info" style="border-radius: 20%;">{{ findstaff }}</span></p>
+												</div>
+											</div>
+										</a>
+									</div>
+									<div class="dash-info-list">
+										<a href="{{ path('course') }}" class="dash-card">
+											<div class="dash-card-container">
+												<div class="dash-card-icon">
+													<i class="fa fa-cubes"></i>
+												</div>
+												<div class="dash-card-content">
+													<p>Programme Registered  <span class="badge badge-info" style="border-radius: 20%;">{{ findprog }}</span></p>
+												</div>
+												<div class="dash-card-avatars">
+                                                <span class="badge badge-success" style="border-radius: 20%;">{{ findusertest|length }}</span> &nbsp;Course has been assigned to you.
+												</div>
+											</div>
+										</a>
+									</div>
+								</div>
+							</section>
+								 <div class="d-flex">
+							<div class="card flex-fill">
+								<div class="card-body">
+									<h4 class="card-title"> <span class="text-center">Today response</span>  <h5><span>approved </span> &nbsp;<span class="badge bg-success ml-1"  style="border-radius:25px;">{{ absent }}</span> &nbsp;pending <span class="badge bg-danger ml-1" style="border-radius:25px;">&nbsp;{{ pending }}</span></h5></h4>
+									{%if display124|length !=0 %}
+										{% for display in display124 %}
+									<div class="leave-info-box">
+										<div class="media align-items-center">
+
+											<div class="media-body">
+												<div class="ml-2 badge bg-purple" >{{ display.ltype }}</div>
+											</div>
+										</div>
+										<div class="row align-items-center mt-3">
+											<div class="col-6">
+												<h5 class="mb-1">{{ display.FRM|date("F jS Y \\a\\t g:ia")  }}</h5>
+												<span class="text-sm text-muted">Leave Date</span>
+											</div>
+											<div class="col-6 text-right">
+												{% if display.ST == 'pending'%}
+														<h5 class="table-avatar">
+													<span class="badge bg-inverse-info">pending by</span>
+													<a href="#" class="avatar avatar-xs">
+														{% if  display.APPIMAGE| length !=0 %}
+											           <img src="{{ asset('/web/uploads/photos/' ~ display.APPIMAGE) }}"/>
+												{% else %}
+														<img src="{{ asset('img/users.png') }}"/>
+												{% endif %}
+													</a>
+
+												</h5>
+												{% else %}
+
+													<h5 class="table-avatar">
+													<span class="badge bg-inverse-success">Approved by</span>
+													<a href="#" class="avatar avatar-xs">
+														{% if  display.APPIMAGE| length !=0 %}
+											           <img src="{{ asset('/web/uploads/photos/' ~ display.APPIMAGE) }}"/>
+												{% else %}
+														<img src="{{ asset('img/users.png') }}"/>
+												{% endif %}
+													</a>
+
+												</h5>
+												{% endif %}
+											</div>
+										</div>
+									</div>
+
+										{% endfor %}
+										<div class="load-more text-center">
+										<a class="text-dark" href="{{ path('leavesemployee') }}">Load More</a>
+								      </div>
+
+									{% else %}
+										<span style="color: red;">no pending leave or approved leave.</span>
+									{% endif %}
+
+								</div>
+							</div>
+						</div>
+							</div>
+							<div class="col-lg-4 col-md-4">
+							<div class="dash-sidebar">
+								<section>
+									<h5 class="dash-title">Projects</h5>
+									<div class="card">
+										<div class="card-body">
+											<div class="time-list">
+												<div class="dash-stats-list">
+													<h4>{{ assign }}</h4>
+													<p>Assigned project</p>
+												</div>
+											</div>
+											<div class="request-btn">
+												<div class="dash-stats-list">
+													<h4>{{ findproject }}</h4>
+													<p>Total Projects</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</section>
+								<section>
+									<h5 class="dash-title">Your Leave</h5>
+									<div class="card">
+										<div class="card-body">
+											<div class="time-list">
+												<div class="dash-stats-list">
+													<h4>{{ avgleaves }}</h4>
+													<p>Leave Taken</p>
+												</div>
+												<div class="dash-stats-list">
+													<h4>{{ remain }}</h4>
+													<p>Remaining</p>
+												</div>
+											</div>
+												{% if assign2 != 0 %}
+											<div class="request-btn">
+												<a class="btn btn-primary" href="{{ path('leavesemployee') }}">Apply Leave</a>
+											</div>
+													{% endif %}
+										</div>
+									</div>
+								</section>
+
+							</div>
+							</div>
+
+
+					</div>
+
+					</div>
+                </div>
+	{% endif %}
+{% endblock %}

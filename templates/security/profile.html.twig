@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if app.user %}
+        {% if app.user.title=='administrator' %}
+             {% include('security/usernavbar.html.twig') %}
+        {% elseif app.user.title == 'HoDs' %}
+             {% include('college/usernavbar.html.twig') %}
+         {% else %}
+             {% include('college/userstaff.html.twig') %}
+        {% endif %}
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+                        <div class="page-header" style="padding-top: 20px;">
+						<div class="row align-items-center">
+							<div class="col">
+								<h3 class="page-title">Employee Profile</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active">profile</li>
+								</ul>
+							</div>
+                  </div>
+                 </div>
+					{% for rt in display1 %}
+                    	<div class="card mb-0">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="profile-view">
+										<div class="profile-img-wrap">
+											<div class="profile-img" >
+												{% if  rt.userimage| length !=0 %}
+											           <img src="{{ asset('/web/uploads/photos/' ~ rt.userimage) }}"/>
+												{% else %}
+														<img src="{{ asset('img/users.png') }}"/>
+												{% endif %}
+
+											</div>
+										</div>
+										<div class="profile-basic">
+											<div class="row">
+												<div class="col-md-5">
+
+													<div class="profile-info-left">
+														<h3 class="user-name m-t-0 mb-0">{{rt.name}}</h3>
+														<h6 class="text-muted">{{ rt.title }}</h6>
+														<div class="small doj text-muted">Date of Join : {{ rt.DoM }}</div>
+													</div>
+												</div>
+												<div class="col-md-7">
+													<ul class="personal-info">
+														<li>
+															<div class="title">Phone:</div>
+															<div class="text">{{ rt.phoneno }}</div>
+														</li>
+														<li>
+															<div class="title">Email:</div>
+															<div class="text">{{ rt.email }}</div>
+														</li>
+														<li>
+															<div class="title">Date of Birth:</div>
+															<div class="text">{{ rt.DoB }}</div>
+														</li>
+														<li>
+															<div class="title">Gender:</div>
+															<div class="text">{{ rt.gender }}</div>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<div class="pro-edit"><a class="edit-icon" href="/dashboard/profile/{{ rt.id }}/edit/information"><i class="fa fa-pencil"></i></a></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="card tab-box">
+						<div class="row user-tabs">
+							<div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+								<ul class="nav nav-tabs nav-tabs-bottom">
+									<li class="nav-item"><a href="#emp_profile" data-bs-toggle="tab" class="nav-link active">Profile</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<div class="tab-content">
+
+						<!-- Profile Info Tab -->
+						<div id="emp_profile" class="pro-overview tab-pane fade show active">
+							<div class="row">
+								<div class="col-md-6 d-flex">
+									<div class="card profile-box flex-fill">
+										<div class="card-body">
+											<h3 class="card-title">Personal Informations </h3>
+											<ul class="personal-info">
+												<li>
+													<div class="title">Nationality</div>
+													<div class="text">{{ rt.nationality }}</div>
+												</li>
+												<li>
+													<div class="title">Religion</div>
+													<div class="text">{{ rt.Religion }}</div>
+												</li>
+												<li>
+													<div class="title">Marital status</div>
+													<div class="text">{{ rt.maritalstatus }}</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 d-flex">
+									<div class="card profile-box flex-fill">
+										<div class="card-body">
+											<h3 class="card-title">Other Information</h3>
+											<ul class="personal-info">
+												<li>
+															<div class="title">Employee status:</div>
+
+															 {% if app.user.id == dis %}
+
+													            <div class="text">Absent</div>
+													        {% else %}
+
+																<div class="text">Present</div>
+													        {% endif %}
+												</li>
+												<li>
+													<div class="title">Department comment:</div>
+													<div class="text">{{ rt.deptcom }}</div>
+												</li>
+
+											</ul>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- /Profile Info Tab -->
+
+                </div>
+            </div>
+				{%  endfor %}
+			</div>
+
+ {% endif %}
+ {% endblock %}

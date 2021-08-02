@@ -1,0 +1,55 @@
+{% extends 'base.html.twig'%}
+
+{% block title %}Welcome To COAF Login Area{% endblock %}
+
+{% block body %}
+  <div class="account-page">
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+			<div class="account-content">
+                   <div class="container">
+                         {% for themes in themedisplay %}
+                         <h3 class="account-title">{{ themes.websitename }}</h3>
+                         <div class="account-logo">
+                		 {% if  themes.lightlogo | length !=0 %}
+                              <img src="{{ asset('/themsetting/' ~ themes.lightlogo ) }}" alt="" />
+						  {% else %}
+                              <img src="{{ asset('img/udsm.png') }}" alt=""  />
+						  {% endif %}
+                         </div>
+                         {% endfor %}
+                         <div class="account-box">
+                             <div class="account-wrapper">
+                              <form method="post">
+                                     {% if error %}
+                                         <div class="alert alert-danger alert-dismissible">
+                                             {{ error.messageKey|trans(error.messageData, 'security') }}
+                                         </div>
+
+                                    {% endif %}
+                                    <div class="form-group">
+                                    <input type="email" name="email"  value="{{ last_username }}"  class="form-control" placeholder="Enter your email" required autofocus />
+                                    </div>
+                                      <div class="form-group">
+                                    <input type="password" name="password" class="form-control" placeholder="Enter password" required />
+                                      </div>
+                                      <div class="form-group">
+                                     <input type="hidden" name="_csrf_token"
+                               value="{{ csrf_token('authenticate') }}" />
+                                      </div>
+                                        <div class="form-group text-center">
+                                        <button class="account-lost" type="submit" style="color:white;">Sign In</button>
+                                    </div>
+                                 </form>
+                                 <div class="hr"></div>
+                                 <div class="account-footer">
+                                   <a href="{{ path('reset') }}" role="button" ><i class="fa fa-lock"></i> &nbsp;Forgot password?</a>
+                                  </div>
+                             </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+         <!-- end main wrapper-->
+      </div>
+{% endblock  %}

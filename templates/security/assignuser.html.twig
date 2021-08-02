@@ -1,0 +1,157 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if app.user %}
+       {% if app.user.title=='administrator' %}
+             {% include('security/usernavbar.html.twig') %}
+        {% elseif app.user.title == 'HoDs' %}
+             {% include('college/usernavbar.html.twig') %}
+         {% else %}
+             {% include('college/userstaff.html.twig') %}
+        {% endif %}
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+                 <div class="page-header">
+						<div class="row align-items-center">
+							<div class="col">
+                                <h3 class="page-title">Add Member</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active">{{ projectname }}</li>
+								</ul>
+							</div>
+                        {% if app.user.title == 'administrator' or app.user.title =='HoDs' %}
+                           <div class="col-auto float-right ml-auto">
+								<a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#myForm"><i class="fa fa-plus"></i> Add Member</a>
+                             </div>
+                             <div class="alert col-md-5 col-lg-5 col-sm-12 col-xs-12 offset-4" >
+                                          {% for messages in app.flashes('addme') %}
+                                                   <div class="offset-2" style="padding-bottom: 2%;">
+                                                   <span style="color:red;">
+                                                     {{ messages }}
+                                                   </span>
+                                                             </div>
+                                               {% endfor %}
+                                            </div>
+                            <!---START TEST--->
+                            <div class="modal fade" id="myForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                              <div class="modal-dialog modal-md" >
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel" style="padding-left:40%;">Add Member</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body" >
+                                
+                                    <form method="post">
+                                        <div class="row g-6" style="padding-bottom:3%;">
+                                          <div class="col" >
+                                                <label for="user">Staff Name <span style="color:red;">*</span></label>
+                                                <input type="email" name="username" class="form-control" placeholder="Staff email" aria-label="Staff email" id="inputGroup-sizing-default">
+                                          </div>
+                                        </div>
+
+
+
+
+                                  <div class="modal-footer" style="padding-left:40%;justify-content: flex-start;">
+                                    <button type="submit" class="btn btn-block btn-warning" style="width:140px;height:40px;border-radius:30px;">Submit</button>
+                                  </div>
+                                      </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!--END TEST-->
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table id="zero_config" class="table table-striped custom-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Staff Name</th>
+                                                        <th>Staff Email</th>
+                                                      {% if app.user.title == 'administrator' or app.user.title =='HoDs' %}
+                                                         <th class="text-right">Action</th>
+                                                       {% endif %}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                   {% for temp,project in display %}
+                                                    <tr>
+                                                        <td>
+                                                            {{ temp+1 }}
+                                                        </td>
+                                                        <td>
+                                                            <h2 class="table-avatar">
+                                                                <a href="#" class="avatar">
+                                                            {% if  project.APP| length !=0 %}
+                                                                   <img src="{{ asset('/web/uploads/photos/' ~ display.APPIMAGE) }}"/>
+                                                            {% else %}
+                                                                    <img src="{{ asset('img/users.png') }}"/>
+                                                            {% endif %}
+                                                                </a>
+                                                                <a href="#">{{project.username}} </a>
+                                                            </h2>
+											                </td>
+                                                        <td>{{ project.email}}</td>
+                                                    {% if app.user.title == 'administrator' or app.user.title =='HoDs' %}
+                                                        <td>
+                                                             <a  href="#" data-bs-toggle="modal" data-bs-target="#delete_promotion"><i class="fa fa-trash-o font-18" style="color:red;"></i></a>
+										                	</td>									                                                                                                 <!-- Delete Promotion Modal -->
+                                                        <div class="modal custom-modal fade" id="delete_promotion" role="dialog">
+                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-body">
+                                                                        <div class="form-header">
+                                                                            <h3>Delete Project Member</h3>
+                                                                            <p>Are you sure want to delete?</p>
+                                                                        </div>
+                                                                        <div class="modal-btn delete-action">
+                                                                            <div class="row">
+                                                                                <div class="col-6">
+                                                                                    <a href="/remove/{{ project.lafesa }}/{{ projectname }}/{{ project.ID }}"" class="btn btn-primary continue-btn">Delete</a>
+                                                                                </div>
+                                                                                <div class="col-6">
+                                                                                    <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /Delete Promotion Modal -->
+                                                    {% endif  %}
+                                                    </tr>
+                                                  {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+
+        <script>
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable();
+    </script>
+
+            {% endif %}
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if app.user %}
+        {% include('security/usernavbar.html.twig') %}
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+                 <div class="page-header" style="padding-top: 20px;">
+						<div class="row">
+							<div class="col">
+                                <h3 class="page-title">Available Security Logs </h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active">Admin Area</li>
+								</ul>
+						  	</div>   
+                       <div class="col-auto float-start  me-auto">
+                <a href="{{ path('logspdf') }}" class="btn btn-success" style="color: white;" ><i class="fa fa-print"></i> Print Security Logs per day</a>
+                             </div>                
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                       <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table id="zero_config" class="table table-striped custom-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Email</th>
+                                                        <th>Last Activity at</th>
+                                                     </tr>
+                                                </thead>
+                                                <tbody>
+                                                   {% for temp,display in displaystaff %}
+                                                        <tr>
+                                                           <td>{{ temp +1 }}</td>
+                                                           <td>
+                                                            <h2 class="table-avatar">
+                                                                <a href="#" class="avatar">
+                                                            {% if  display.APPIMAGE| length !=0 %}
+                                                                   <img src="{{ asset('/web/uploads/photos/' ~ display.APPIMAGE) }}"/>
+                                                            {% else %}
+                                                                    <img src="{{ asset('img/users.png') }}"/>
+                                                            {% endif %}
+                                                                </a>
+                                                                <a href="#">{{display.name}} </a>
+                                                            </h2>
+											                </td>
+                                                            <td>{{ display.email }}</td>
+                                                        
+                                                            <td>{{ display.last_activity_at|date("F jS Y \\a\\t g:ia")  }}</td>
+                                                                    
+									                    </tr>
+                                                                            
+
+                                                   {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+
+        <script>
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable();
+    </script>
+            {% endif %}
+{% endblock %}

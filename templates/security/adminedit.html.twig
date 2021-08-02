@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if app.user %}
+        {% if app.user.title=='administrator' %}
+             {% include('security/usernavbar.html.twig') %}
+        {% else %}
+             {% include('college/usernavbar.html.twig') %}
+        {% endif %}
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+                 <div class="page-header">
+						<div class="row align-items-center">
+							<div class="col">
+                               <h3 class="page-title">Update System Administrator Info</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active">Update Information</li>
+								</ul>
+							</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                    <div class="card-body">
+                                      {{ form_start(form) }}
+									<div class="form-group">
+                                       {{ form_row(form.name) }}
+									</div>
+                                     <div class="form-group">
+                                              {{ form_row(form.email) }}
+                                      </div>
+                                     <div class="form-group">
+                                              {{ form_row(form.gender) }}
+                                     </div>
+                                     <div class="form-group">
+                                              {{ form_row(form.DoB) }}
+                                      </div>
+                                     <div class="form-group">
+                                              {{ form_row(form.DoM) }}
+                                     </div>
+                                      <div class="form-group">
+                                              {{ form_row(form.title) }}
+                                      </div>
+                                       <div class="form-group">
+                                              {{ form_row(form.employeestatus) }}
+                                          </div>
+                                     <div class="form-group">
+                                              {{ form_row(form.phoneno) }}
+                                          </div>
+
+                                     <div class="form-group">
+                                              {{ form_row(form.Religion) }}
+                                          </div>
+                                     <div class="form-group">
+                                              {{ form_row(form.maritalstatus) }}
+                                     </div>
+                                     <div class="form-group">
+                                              {{ form_row(form.nationality) }}
+                                      </div>
+                                   <div class="form-group">
+                                              {{ form_row(form.deptcom) }}
+                                       </div>
+
+                                   	<div class="submit-section">
+                                        {{ form_row(form.save) }}
+									</div>
+								 {{ form_end(form) }}
+
+                              </div>
+                            </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+            {% endif %}
+{% endblock %}

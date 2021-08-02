@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <!--if start-->
+     {% if app.user %}
+		 {% if app.user.title=='administrator' %}
+             {% include('security/usernavbar.html.twig') %}
+        {% elseif app.user.title == 'HoDs' %}
+             {% include('college/usernavbar.html.twig') %}
+         {% else %}
+             {% include('college/userstaff.html.twig') %}
+        {% endif %}
+<!-- Page Wrapper -->
+            <div class="page-wrapper">
+
+				<!-- Page Content -->
+                <div class="content container-fluid">
+
+					<!-- Page Header -->
+					<div class="page-header" style="padding-top:20px; ">
+						<div class="row">
+								<div class="col">
+									<h3 class="page-title">Leaves Type</h3>
+									<ul class="breadcrumb">
+										<li class="breadcrumb-item">Dashboard</li>
+										<li class="breadcrumb-item active">Leaves Type</li>
+									</ul>
+								</div>
+
+						</div>
+					</div>
+					<!-- /Page Header -->
+						{% if lafesa2| length !=0 %}
+
+						   <div class="row">
+						   {% for l in lafesa2 %}
+							<div class="col-md-6">
+								<div class="stats-info">
+									<h6 class="text-purple">{{ l.name }}</h6>
+                                           {% if l.lchance!=l.lrem %}
+											<h4><span >Chance remaining </span><span class="badge bg-danger" style="color: white;border-radius: 25px;">{{ l.lrem }}
+												</span>
+											</h4>
+											{% else %}
+									<h4 ><span>Chance available</span> <span class="badge bg-success" style="color:white;border-radius: 25px;">{{l.lchance}}</span>
+										   {% endif %}
+
+									</h4>
+								</div>
+							</div>
+							   {% endfor %}
+						</div>
+						{% else %}
+							<div class="row">
+                          	<div class="col-md-12">
+								<div class="stats-info">
+									<h6 class="text-danger text-center">No available leaves type</h6>
+								</div>
+							</div>
+						{% endif %}
+
+                </div>
+				<!-- /Page Content -->
+
+
+			</div>
+			</div>
+
+    {% endif %}
+    <!-- end if-->
+
+{% endblock %}

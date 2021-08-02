@@ -1,0 +1,143 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if app.user %}
+       {% if app.user.title=='administrator' %}
+             {% include('security/usernavbar.html.twig') %}
+        {% else %}
+             {% include('college/usernavbar.html.twig') %}
+        {% endif %}
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+                 <div class="page-header" style="padding-top: 20px;">
+						<div class="row align-items-center">
+							<div class="col">
+                               <h3 class="page-title">{{ programme }}</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active">Course Available</li>
+								</ul>
+							</div>
+                     <div class="col-auto float-right ml-auto">
+								<a href="#" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#myForm"><i class="fa fa-plus"></i> Add Course</a>
+                     </div>
+                                   <!---START TEST--->
+                                   <div class="alert col-md-5 col-lg-5 col-sm-12 col-xs-12 offset-4">
+                                          {% for messages in app.flashes('danger') %}
+                                                   <div class="offset-2" style="padding-bottom: 2%;">
+                                                   <span style="color:red;">
+                                                     {{ messages }}
+                                                   </span>
+                                                             </div>
+                                               {% endfor %}
+                                            </div>
+
+                   <div class="modal fade" id="myForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                                      <div class="modal-dialog modal-md" >
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel" style="padding-left:40%;">Add Course</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                           <div class="modal-body" >
+                                                {% if pprogramme|length != 0 %}
+                                        
+                                                  <form method="post">
+                                                <div class="row g-6" style="padding-bottom:3%;">
+                                                  <div class="col" >
+                                                        <label for="cname">Course Name <span style="color:red;">*</span></label>
+                                                        <input type="text" name="cname" class="form-control" placeholder="Course name" aria-label="Course name" id="inputGroup-sizing-default">
+                                                  </div>
+                                                </div>
+                                                    <div class="row g-6" style="padding-bottom:3%;">
+                                                  <div class="col" >
+                                                        <label for="cname">Course Short Name <span style="color:red;">*</span></label>
+                                                        <input type="text" name="csname" class="form-control" placeholder="Course short name" aria-label="Short name" id="inputGroup-sizing-default">
+                                                  </div>
+                                                </div>
+                                                <div class="row g-6" style="padding-bottom:3%;">
+                                                  <div class="col">
+                                                        <label for="credit">Course Credit <span style="color:red;">*</span></label>
+                                                        <input type="number" name="credit" class="form-control" placeholder="Course credit" aria-label="Last name" id="inputGroup-sizing-default">
+                                                  </div>
+                                                </div>
+                                          <div class="modal-footer" style="padding-left:40%;justify-content: flex-start;">
+                                            <button type="submit" class="btn btn-primary btn-block" style="width:140px;height:40px;border-radius:30px;">Submit</button>
+                                          </div>
+                                              </form>
+                                             {% else %}
+                                                 <div class="alert alert-warning">No programme register at this moment, please add one..</div>
+                                             {% endif %}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <!--END TEST-->
+                        </div>
+                 </div>
+
+                    <div class="row">
+                           <div class="col-md-3" style="padding-top: 3%;">
+								<div class="stats-info">
+									<h6 class="text-success">Course Registered</h6>
+									<h4>{{ findcourse|length }}</h4>
+								</div>
+							</div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table id="zero_config" class="table table-striped custom-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Course Name</th>
+                                                        <th>Course Short Name</th>
+                                                        <th>Course Credit</th>
+                                                         <th class="text-right">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                   {% for temp,course in findcourse %}
+                                                    <tr class="odd">
+                                                        <td>{{ temp + 1 }}</td>
+                                                        <td>{{ course.coursename}}</td>
+                                                        <td><span class="badge badge-info">{{ course.cshortname }}</span></td>
+                                                        <td><span class="badge badge-success">{{ course.credits }}</span></td>
+
+                                                        <td>
+                                                         <a href="/{{ course.id }}/edit" >
+                                                             <i class="fa fa-edit font-18" style="color:darkorange;"></i>
+                                                              </a>&nbsp;
+                                                            <a href="/course/addinstructor/{{ course.id }}/{{ course.coursename }}" > <i class="fa fa-user-plus" style="color:green;"></i> </a>&nbsp;
+                                                            <a  href="/{{ course.id }}/remove/course" ><i class="fa fa-trash-o font-18" style="color:red;"></i></a>
+										                	</td>
+
+                                                     </tr>
+                                                  {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+
+        <script>
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable();
+    </script>
+
+            {% endif %}
+{% endblock %}

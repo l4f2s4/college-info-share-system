@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if app.user %}
+        {% if app.user.title=='administrator' %}
+             {% include('security/usernavbar.html.twig') %}
+        {% elseif app.user.title == 'HoDs' %}
+             {% include('college/usernavbar.html.twig') %}
+         {% else %}
+             {% include('college/userstaff.html.twig') %}
+        {% endif %}
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+                 <div class="page-header" style="padding-top: 20px;">
+						<div class="row">
+							<div class="col">
+                                <h3 class="page-title">Update info</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active">Update Project</li>
+								</ul>
+							</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                    <div class="card-body">
+                                      {{ form_start(form) }}
+                                        <div class="row" >
+                                          <div class="col-sm-6" >
+                                              {{ form_row(form.name) }}
+                                          </div>
+                                                <div class="col-sm-6">
+
+                                                 {{ form_row(form.startdate) }}
+                                        </div>
+                                        </div>
+                                        <div class="row">
+                                          <div class="col-sm-6" >
+                                              {{ form_row(form.deadline) }}
+                                          </div>
+                                                <div class="col-sm-6">
+
+                                                 {{ form_row(form.priority) }}
+                                        </div>
+                                        </div>
+                                        <div class="row" >
+                                          <div class="col-sm-6" >
+                                              {{ form_row(form.status) }}
+                                          </div>
+                                                <div class="col-sm-6">
+
+                                                 {{ form_row(form.content) }}
+                                        </div>
+                                        </div>
+                                        <div class="row">
+                                          <div class="col" >
+                                                 {{ form_row(form.save) }}
+                                        </div>
+                                        </div>
+
+                                                {{ form_end(form) }}
+
+                              </div>
+                            </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+            {% endif %}
+{% endblock %}

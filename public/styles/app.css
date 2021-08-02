@@ -1,0 +1,21 @@
+.lafesa-login{
+    content:'';
+    height:100vh;
+    width:1px;
+	background: #06357a;
+	background: -moz-linear-gradient(left, #06357a 0%, #6e00ff 100%);
+	background: -webkit-linear-gradient(left, #06357a 0%,#6e00ff 100%);
+	background: -ms-linear-gradient(left, #06357a 0%, #1b6d85 100%);
+	background: linear-gradient(to right, #06357a 0%, #6e00ff 100%);
+}
+.lafesa-set{
+    max-width:500px;
+    padding:15% 0;
+    width:65%;
+    position:relative;
+	margin: 0 auto;
+}
+.custom-table tr {
+	background-color: #fff;
+	box-shadow: 0 0 3px #e5e5e5;
+}

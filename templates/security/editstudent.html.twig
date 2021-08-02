@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if app.user %}
+        {% if app.user.title=='administrator' %}
+             {% include('security/usernavbar.html.twig') %}
+        {% elseif app.user.title == 'HoDs' %}
+             {% include('college/usernavbar.html.twig') %}
+         {% else %}
+             {% include('college/userstaff.html.twig') %}
+        {% endif %}
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+                 <div class="page-header">
+						<div class="row align-items-center">
+							<div class="col">
+                               <h3 class="page-title">Update Student Info</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active">Update Undergraduate Information</li>
+								</ul>
+							</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                    <div class="card-body">
+                                      {{ form_start(form) }}
+                                        <div class="row g-6" style="padding-bottom:3%;">
+                                          <div class="col" >
+                                              {{ form_row(form.name) }}
+                                          </div>
+
+                                          <div class="col" >
+                                              {{ form_row(form.email) }}
+                                          </div>
+                                        </div>
+                                            <div class="row g-6" style="padding-bottom:3%;">
+                                          <div class="col" >
+                                              {{ form_row(form.gender) }}
+                                          </div>
+
+                                          <div class="col" >
+                                              {{ form_row(form.phoneno) }}
+                                          </div>
+                                        </div>
+                                            <div class="row g-6" style="padding-bottom:3%;">
+                                          <div class="col" >
+                                              {{ form_row(form.citizenship) }}
+                                          </div>
+
+                                          <div class="col" >
+                                              {{ form_row(form.yos) }}
+                                          </div>
+                                        </div>
+                                            <div class="row g-6" style="padding-bottom:3%;">
+                                          <div class="col" >
+                                              {{ form_row(form.regno) }}
+                                          </div>
+                                        </div>
+
+                                      <div class="submit-section">
+                                        {{ form_row(form.save) }}
+									</div>
+								 {{ form_end(form) }}
+
+                              </div>
+                            </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+            {% endif %}
+{% endblock %}

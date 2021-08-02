@@ -1,0 +1,634 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <!--if start-->
+     {% if app.user %}
+		 {% if app.user.title=='administrator' %}
+             {% include('security/usernavbar.html.twig') %}
+        {% elseif app.user.title == 'HoDs' %}
+             {% include('college/usernavbar.html.twig') %}
+         {% else %}
+             {% include('college/userstaff.html.twig') %}
+        {% endif %}
+<!-- Page Wrapper -->
+            <div class="page-wrapper">
+
+				<!-- Page Content -->
+                <div class="content container-fluid">
+
+					<!-- Page Header -->
+					<div class="page-header" style="padding-top:20px; ">
+						<div class="row">
+
+							{% if app.user.title=='staff' %}
+								<div class="col">
+									<h3 class="page-title">Leaves</h3>
+									<ul class="breadcrumb">
+										<li class="breadcrumb-item">Dashboard</li>
+										<li class="breadcrumb-item active">Request Leaves</li>
+									</ul>
+								</div>
+							{% else %}
+								<div class="col">
+									<h3 class="page-title">Leave Staff</h3>
+									<ul class="breadcrumb">
+										<li class="breadcrumb-item">Dashboard</li>
+										<li class="breadcrumb-item active">Leave staff</li>
+									</ul>
+								</div>
+							{% endif %}
+							 {% if app.user.title=='HoDs' or app.user.title=='staff'%}
+							<div class="col-auto float-right ml-auto">
+								<a href="#" class="btn  btn-primary" data-bs-toggle="modal" data-bs-target="#add_leave">Apply Leave</a>
+							</div>
+							{% endif %}
+						</div>
+					</div>
+					<!-- /Page Header -->
+                    {% if app.user.title=='administrator' %}
+						<!-- Leave Statistics -->
+						<div class="row">
+							<div class="col-md-3">
+								<div class="stats-info">
+									<h6 class="text-success">Total Approved</h6>
+									<h4>{{totalapproved}} / {{ total}}</h4>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="stats-info">
+									<h6 class="text-purple">Planned Leaves</h6>
+									<h4>{{ totalnew }} <span> wait for you action</span></h4>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="stats-info">
+									<h6 class="text-danger">Decline Leaves</h6>
+									<h4>{{ totaldecline }}</h4>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="stats-info">
+									<h6 class="text-info">Pending Requests</h6>
+									<h4>{{ totalpending }}</h4>
+								</div>
+							</div>
+						</div>
+						<!-- end leaves  Statistics -->
+					{% elseif app.user.title=='HoDs'%}
+						<!-- Leave Statistics -->
+						<div class="row">
+							<div class="col-md-3">
+								<div class="stats-info">
+									<h6 class="text-success">Total Approved</h6>
+									<h4>{{totalapprovedhod}} / {{ totalhod}}</h4>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="stats-info">
+									<h6 class="text-purple">Planned Leaves</h6>
+									<h4>{{ totalnewhod }} <span> wait for you action</span>
+									</h4>
+									<h4>
+
+									</h4>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="stats-info">
+									<h6 class="text-danger">Decline Leaves</h6>
+									<h4>{{ totaldeclinehod }}</h4>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="stats-info">
+									<h6 class="text-info">Pending Requests</h6>
+									<h4>{{ totalpendinghod }}</h4>
+								</div>
+							</div>
+						</div>
+						<!-- end leaves  Statistics -->
+					{% else %}
+						 <!-- Leave Statistics staff-->
+						{% if lafesa| length !=0 %}
+
+						   <div class="row">
+						   {% for l in lafesa %}
+							<div class="col-md-4">
+								<div class="stats-info">
+									<h6 class="text-purple">{{ l.name }}</h6>
+                                           {% if l.lchance!=l.lrem %}
+											<h4><span >Chance remaining </span><span class="badge bg-danger" style="color: white;border-radius: 25px;">{{ l.lrem }}
+												</span>
+											</h4>
+											{% else %}
+									<h4 ><span>Chance available</span> <span class="badge bg-success" style="color:white;border-radius: 25px;">{{l.lchance}}</span>
+										   {% endif %}
+
+									</h4>
+								</div>
+							</div>
+							   {% endfor %}
+							   <div class="col-md-3">
+								<div class="stats-info">
+									<h6 class="text-info">Other Leave</h6>
+									{% if cout >=3 %}
+										<h4><span class="badge bg-purple" style="color: white;border-radius: 25px;">{{cout - 2}}</span>
+										 <a href="{{ path('leavestypeavailable') }}">&nbsp;view</a> </h4>
+
+									{% else %}
+									<h4><span class="badge bg-purple" style="color: white;border-radius: 25px;">0</span></h4>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+						{% else %}
+							<div class="row">
+                          	<div class="col-md-12">
+								<div class="stats-info">
+									<h6 class="text-danger text-center">No available leaves type</h6>
+								</div>
+							</div>
+						{% endif %}
+						<!-- end Leave Statistics -->
+					{% endif %}
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table-responsive">
+								<table id="zero_config" class="table table-striped">
+									<thead>
+										<tr>
+											{% if app.user.title!='staff' %}
+											<th>Employee</th>
+											{% endif %}
+											<th>Leave Type</th>
+											<th>From</th>
+											<th>To</th>
+											<th>#Days</th>
+											<th>Reason</th>
+											<th class="text-center">Status</th>
+											<th>ApprovedBy</th>
+											{% if app.user.title!='staff' %}
+											<th class="text-right">Actions</th>
+											{% endif %}
+										</tr>
+									</thead>
+									<tbody>
+										{% for display in displayleaves %}
+									{% if app.user.title =='HoDs'  and (display.title=='HoDs' or display.title=='staff')  and display23==display.just %}
+										<tr>
+											 <td>
+												<h2 class="table-avatar">
+													<a href="#" class="avatar">
+												{% if  display.userimage| length !=0 %}
+											           <img src="{{ asset('/web/uploads/photos/' ~ display.userimage) }}"/>
+												{% else %}
+														<img src="{{ asset('img/users.png') }}"/>
+												{% endif %}
+													</a>
+													<a href="#">{{display.Emp}} <span>{{display.title}}</span></a>
+												</h2>
+											</td>
+											<td>{{ display.ltype }}</td>
+											<td>{{ display.FRM|date("F jS Y \\a\\t g:ia")  }}</td>
+											<td>{{ display.lTO|date("F jS Y \\a\\t g:ia")  }}</td>
+											<td>{{ display.lDay }}</td>
+											<td>{{ display.lreason }}</td>
+											<td class="text-center">
+
+													{% if display.status=='new' %}
+														 <div class="dropdown action-label">
+															<a class="btn btn-white btn-sm btn-rounded dropdown-bs-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+																<i class="fa fa-dot-circle-o text-purple"></i> {{ display.status }}
+															</a>
+															<div class="dropdown-menu dropdown-menu-right">
+																<a class="dropdown-item" href="/leaves/employee/available/pending/user/request/{{ display.lID }}"><i class="fa fa-dot-circle-o text-info"></i> Pending</a>
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#approve_leave"><i class="fa fa-dot-circle-o text-success"></i> Approved</a>
+																<a class="dropdown-item" href="/leaves/employee/available/decline/{{ display.lID }}"><i class="fa fa-dot-circle-o text-danger"></i> Declined</a>
+															</div>
+														</div>
+														<!-- Approve Leave Modal -->
+													<div class="modal custom-modal fade" id="approve_leave" role="dialog">
+											<div class="modal-dialog modal-dialog-centered">
+												<div class="modal-content">
+													<div class="modal-body">
+														<div class="form-header">
+															<h3>Leave Approve</h3>
+															<p>Are you sure want to approve for this leave?</p>
+														</div>
+														<div class="modal-btn delete-action">
+															<div class="row">
+																<div class="col-6">
+																	<a href="/leaves/employee/available/approved/request/{{ display.lID }}/{{ display.say }}" class="btn btn-primary continue-btn">Approve</a>
+																</div>
+																<div class="col-6">
+																	<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Decline</a>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+															<!-- /Approve Leave Modal -->
+													{% endif %}
+													{% if display.status=='pending' %}
+															<div class="dropdown action-label">
+															<a class="btn btn-white btn-sm btn-rounded dropdown-bs-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+																<i class="fa fa-dot-circle-o text-purple"></i> {{ display.status }}
+															</a>
+															<div class="dropdown-menu dropdown-menu-right">
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#approve_leave"><i class="fa fa-dot-circle-o text-success"></i> Approved</a>
+																<a class="dropdown-item" href="/leaves/employee/available/decline/{{ display.lID }}"><i class="fa fa-dot-circle-o text-danger"></i> Declined</a>
+															</div>
+														  </div>
+														<!-- Approve Leave Modal -->
+												<div class="modal custom-modal fade" id="approve_leave" role="dialog">
+										<div class="modal-dialog modal-dialog-centered">
+											<div class="modal-content">
+												<div class="modal-body">
+													<div class="form-header">
+														<h3>Leave Approve</h3>
+														<p>Are you sure want to approve for this leave?</p>
+													</div>
+													<div class="modal-btn delete-action">
+														<div class="row">
+															<div class="col-6">
+																<a href="/leaves/employee/available/approved/request/{{ display.lID }}/{{ display.say }}" class="btn btn-primary continue-btn">Approve</a>
+															</div>
+															<div class="col-6">
+																<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Decline</a>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+													<!-- /Approve Leave Modal -->
+													{% endif %}
+													{% if display.status=='approved' %}
+														<span class="btn btn-white btn-sm btn-rounded"> <i class="fa fa-dot-circle-o text-success"></i>  {{ display.status }}</span>
+													{% endif %}
+													{% if display.status=='decline' %}
+														<span class="btn btn-white btn-sm btn-rounded"> <i class="fa fa-dot-circle-o text-danger"></i>  {{ display.status }}</span>
+													{% endif %}
+											</td>
+											<td>
+												{% if display.status=='approved' %}
+												<h2 class="table-avatar">
+													<a href="#" class="avatar avatar-xs">
+														{% if  display.APPIMAGE| length !=0 %}
+											           <img src="{{ asset('/web/uploads/photos/' ~ display.APPIMAGE) }}"/>
+												{% else %}
+														<img src="{{ asset('img/users.png') }}"/>
+												{% endif %}
+													</a>
+													<a href="#">{{ display.APP }}</a>
+												</h2>
+												{% elseif display.status =='pending' %}
+													<h2 class="table-avatar">
+													<a href="#" class="avatar avatar-xs">
+												{% if display.APPIMAGE| length !=0 %}
+											           <img src="{{ asset('/web/uploads/photos/' ~ display.APPIMAGE) }}"/>
+												{% else %}
+														<img src="{{ asset('img/users.png') }}"/>
+												{% endif %}
+													</a></a>
+													<a href="#">{{ display.APP }}</a>
+												</h2>
+												{% elseif display.status == 'new'  %}
+													wait for approve
+												{% else %}
+													<span style="color:red;">request was decline</span>
+												{% endif %}
+											</td>
+											<td class="text-right">
+														<a  href="#"><i class="fa fa-pencil m-r-5" style="color:darkorange"></i></a>&nbsp;
+														<a  href="#" data-bs-toggle="modal" data-bs-target="#delete_approve"><i class="fa fa-trash-o m-r-5" style="color: red;"></i></a>
+											</td>
+										</tr>
+											<!-- Delete Leave Modal -->
+			   				<div class="modal custom-modal fade" id="delete_approve" role="dialog">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-header">
+									<h3>Delete Leave</h3>
+									<p>Are you sure want to delete this leave?</p>
+								</div>
+								<div class="modal-btn delete-action">
+									<div class="row">
+										<div class="col-6">
+											<a href="/remove/employee/available/request/{{ display.lID }}/{{ display.ID }}/{{ display.say }}" class="btn btn-primary continue-btn">Delete</a>
+										</div>
+										<div class="col-6">
+											<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+							<!-- /Delete Leave Modal -->
+
+									{% endif %}
+									{% if app.user.title=='staff' and display.title=='staff' and display23==display.just and app.user.id==display.ID %}
+										<tr>
+
+                                           	<td>{{ display.ltype }}</td>
+											<td>{{ display.FRM|date("F jS Y \\a\\t g:ia")  }}</td>
+											<td>{{ display.lTO|date("F jS Y \\a\\t g:ia")  }}</td>
+											<td>{{ display.lDay }}</td>
+											<td>{{ display.lreason }}</td>
+											<td class="text-center">
+												   {% if display.status=='new' %}
+                                                	      <span class="btn btn-white btn-sm btn-rounded"> <i class="fa fa-dot-circle-o text-purple"></i>  {{ display.status }}</span>
+													{% endif %}
+												     <!--staff show start-->
+													{% if display.status=='pending'%}
+                                                            <span class="btn btn-white btn-sm btn-rounded"> <i class="fa fa-dot-circle-o text-info"></i>  {{ display.status }}</span>
+													{% endif %}
+												    <!-- staff show-->
+													{% if display.status=='approved' %}
+														<span class="btn btn-white btn-sm btn-rounded"> <i class="fa fa-dot-circle-o text-success"></i>  {{ display.status }}</span>
+													{% endif %}
+													{% if display.status=='decline' %}
+														<span class="btn btn-white btn-sm btn-rounded"> <i class="fa fa-dot-circle-o text-danger"></i>  {{ display.status }}</span>
+													{% endif %}
+											</td>
+											<td>
+												{% if display.status=='approved' %}
+												<h2 class="table-avatar">
+													<a href="#" class="avatar avatar-xs">
+
+														{% if  display.APPIMAGE| length !=0 %}
+											           <img src="{{ asset('/web/uploads/photos/' ~ display.APPIMAGE) }}"/>
+														{% else %}
+																<img src="{{ asset('img/users.png') }}"/>
+														{% endif %}
+													</a>
+													</a>
+													<a href="#">{{ display.APP }}</a>
+												</h2>
+												{% elseif display.status =='pending' %}
+													<h2 class="table-avatar">
+													<a href="#" class="avatar avatar-xs">
+														{% if  display.APPIMAGE| length !=0 %}
+											           <img src="{{ asset('/web/uploads/photos/' ~ display.APPIMAGE) }}"/>
+														{% else %}
+																<img src="{{ asset('img/users.png') }}"/>
+														{% endif %}
+													</a>
+													</a>
+													<a href="#">{{ display.APP }}</a>
+												</h2>
+												{% elseif display.status == 'new'  %}
+													wait for approve
+												{% else %}
+													<span style="color:red;">request was decline</span>
+												{% endif %}
+											</td>
+										</tr>
+
+
+									{% endif %}
+									{% if app.user.title =='administrator' and display.title!='administrator'%}
+								<tr>
+
+											<td>
+												<h2 class="table-avatar">
+													<a href="#" class="avatar">
+
+                                                      {% if  display.userimage| length !=0 %}
+											           <img src="{{ asset('/web/uploads/photos/' ~ display.userimage) }}"/>
+												    {% else %}
+														<img src="{{ asset('img/users.png') }}"/>
+												    {% endif %}
+
+													</a>
+													<a href="#">{{display.Emp}} <span>{{display.title}}</span></a>
+												</h2>
+											</td>
+											<td>{{ display.ltype }}</td>
+											<td>{{ display.FRM|date("F jS Y \\a\\t g:ia")  }}</td>
+											<td>{{ display.lTO|date("F jS Y \\a\\t g:ia")  }}</td>
+											<td>{{ display.lDay }}</td>
+											<td>{{ display.lreason }}</td>
+											<td class="text-center">
+													{% if display.status=='new' %}
+												     <div class="dropdown action-label">
+														<a class="btn btn-white btn-sm btn-rounded dropdown-bs-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+															<i class="fa fa-dot-circle-o text-purple"></i> {{ display.status }}
+														</a>
+														<div class="dropdown-menu dropdown-menu-right">
+															<a class="dropdown-item" href="/leaves/employee/available/pending/user/request/{{ display.lID }}"><i class="fa fa-dot-circle-o text-info"></i> Pending</a>
+															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#approve_leave"><i class="fa fa-dot-circle-o text-success"></i> Approved</a>
+															<a class="dropdown-item" href="/leaves/employee/available/decline/{{ display.lID }}"><i class="fa fa-dot-circle-o text-danger"></i> Declined</a>
+														</div>
+												    </div>
+														<!-- Approve Leave Modal -->
+														<div class="modal custom-modal fade" id="approve_leave" role="dialog">
+												<div class="modal-dialog modal-dialog-centered">
+													<div class="modal-content">
+														<div class="modal-body">
+															<div class="form-header">
+																<h3>Leave Approve</h3>
+																<p>Are you sure want to approve for this leave?</p>
+															</div>
+															<div class="modal-btn delete-action">
+																<div class="row">
+																	<div class="col-6">
+																		<a href="/leaves/employee/available/approved/request/{{ display.lID }}/{{ display.say }}" class="btn btn-primary continue-btn">Approve</a>
+																	</div>
+																	<div class="col-6">
+																		<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Decline</a>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+															<!-- /Approve Leave Modal -->
+													{% endif %}
+													{% if display.status=='pending' %}
+														<div class="dropdown action-label">
+														<a class="btn btn-white btn-sm btn-rounded dropdown-bs-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+															<i class="fa fa-dot-circle-o text-purple"></i> {{ display.status }}
+														</a>
+														<div class="dropdown-menu dropdown-menu-right">
+															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#approve_leave"><i class="fa fa-dot-circle-o text-success"></i> Approved</a>
+															<a class="dropdown-item" href="/leaves/employee/available/decline/{{ display.lID }}"><i class="fa fa-dot-circle-o text-danger"></i> Declined</a>
+														</div>
+												    </div>
+														<!-- Approve Leave Modal -->
+														<div class="modal custom-modal fade" id="approve_leave" role="dialog">
+												<div class="modal-dialog modal-dialog-centered">
+													<div class="modal-content">
+														<div class="modal-body">
+															<div class="form-header">
+																<h3>Leave Approve</h3>
+																<p>Are you sure want to approve for this leave?</p>
+															</div>
+															<div class="modal-btn delete-action">
+																<div class="row">
+																	<div class="col-6">
+																		<a href="/leaves/employee/available/approved/request/{{ display.lID }}/{{ display.say }}" class="btn btn-primary continue-btn">Approve</a>
+																	</div>
+																	<div class="col-6">
+																		<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Decline</a>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+															<!-- /Approve Leave Modal -->
+													{% endif %}
+													{% if display.status=='approved' %}
+														<span class="btn btn-white btn-sm btn-rounded"> <i class="fa fa-dot-circle-o text-success"></i>  {{ display.status }}</span>
+													{% endif %}
+													{% if display.status=='decline' %}
+														<span class="btn btn-white btn-sm btn-rounded"> <i class="fa fa-dot-circle-o text-danger"></i>  {{ display.status }}</span>
+													{% endif %}
+											</td>
+											<td>
+												{% if display.status=='approved' %}
+												<h2 class="table-avatar">
+													<a href="#" class="avatar avatar-xs">
+														{% if  display.APPIMAGE| length !=0 %}
+											           <img src="{{ asset('/web/uploads/photos/' ~ display.APPIMAGE) }}"/>
+											        	{% else %}
+														<img src="{{ asset('img/users.png') }}"/>
+												    {% endif %}
+													</a>
+													<a href="#">{{ display.APP }}</a>
+												</h2>
+												{% elseif display.status =='pending' %}
+													<h2 class="table-avatar">
+													<a href="#" class="avatar avatar-xs">
+														{% if  display.APPIMAGE| length !=0 %}
+											           <img src="{{ asset('/web/uploads/photos/' ~ display.APPIMAGE) }}"/>
+											        	{% else %}
+														<img src="{{ asset('img/users.png') }}"/>
+												    {% endif %}
+													</a>
+													<a href="#">{{ display.APP }}</a>
+												</h2>
+												{% elseif display.status == 'new'  %}
+													wait for approve
+												{% else %}
+													<span style="color:red;">request was decline</span>
+												{% endif %}
+											</td>
+											<td class="text-right">
+														<a  href="#"><i class="fa fa-pencil m-r-5" style="color:darkorange"></i></a>&nbsp;
+														<a  href="#" data-bs-toggle="modal" data-bs-target="#delete_approve"><i class="fa fa-trash-o m-r-5" style="color: red;"></i></a>
+											</td>
+										</tr>
+											<!-- Delete Leave Modal -->
+			   				<div class="modal custom-modal fade" id="delete_approve" role="dialog">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-header">
+									<h3>Delete Leave</h3>
+									<p>Are you sure want to delete this leave?</p>
+								</div>
+								<div class="modal-btn delete-action">
+									<div class="row">
+										<div class="col-6">
+											<a href="/remove/employee/available/request/{{ display.lID }}/{{ display.ID }}/{{ display.say }}" class="btn btn-primary continue-btn">Delete</a>
+										</div>
+										<div class="col-6">
+											<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+							<!-- /Delete Leave Modal -->
+
+									{% endif %}
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+                </div>
+				<!-- /Page Content -->
+
+				<!-- Add Leave Modal -->
+				<div id="add_leave" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Add Leave</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								  {% if findleaves|length != 0 %}
+								 {% for messages in app.flashes('typ') %}
+                                                   <div class="offset-2" style="padding-bottom: 2%;">
+													   <span style="color:red;">
+														 {{ messages }}
+													   </span>
+                                                  </div>
+                                     {% endfor %}
+								<form method="post">
+									<div class="form-group">
+										<label>Leave Type <span class="text-danger">*</span></label>
+										<select class="form-control" name="ltype">
+											      <option selected>Select leaves type</option>
+                                                           {% for leavestype in findleaves %}
+                                                            <option value="{{leavestype.name}}">{{ leavestype.name }}</option>
+                                                           {% endfor %}
+											             </select>
+									</div>
+									<div class="form-group">
+										<label>From <span class="text-danger">*</span></label>
+											<input class="form-control" name="lfrom"  id="lf" type="datetime-local">
+									</div>
+									<div class="form-group">
+										<label>To <span class="text-danger">*</span></label>
+											<input class="form-control" name="lto" id="lt" type="datetime-local">
+									</div>
+							
+									<div class="form-group">
+										<label>Leave Reason <span class="text-danger">*</span></label>
+										<textarea rows="4" class="form-control" name="lreason"></textarea>
+									</div>
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+               
+							  {% else %}
+								  <div class="alert alert-warning">No leave type setting wait for setting..</div>
+                               {% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Add Leave Modal -->
+			</div>
+
+<script>
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable();
+
+
+    </script>
+
+    {% endif %}
+    <!-- end if-->
+
+{% endblock %}

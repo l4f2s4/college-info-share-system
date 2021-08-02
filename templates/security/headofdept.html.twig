@@ -1,0 +1,232 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if app.user %}
+     {% if displaytest == 'administrator' %}
+        {% include('security/usernavbar.html.twig') %}
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+                 <div class="page-header" style="padding-top: 20px;">
+						<div class="row">
+							<div class="col">
+                                <h3 class="page-title">List of HoDs</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active">HoDs</li>
+								</ul>
+							</div>
+
+                           <div class="col-auto float-right ml-auto">
+								<a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#myForm"><i class="fa fa-plus"></i> Add HoDs</a>
+                             </div>
+                            <!---START TEST--->
+                            <div class="modal fade" id="myForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                              <div class="modal-dialog modal-lg" >
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel" style="padding-left:40%;">New HoDs</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body" >
+                                       {% if finddept|length != 0 %}
+                                       {% for messages in app.flashes('success') %}
+                                                   <div class="offset-2" style="padding-bottom: 2%;">
+                                                   <span style="color:red;">
+                                                     {{ messages }}
+                                                   </span>
+                                                             </div>
+                                               {% endfor %}
+                                    <form method="post">
+                                        <div class="row g-6" style="padding-bottom:3%;">
+                                          <div class="col" >
+                                                <label for="fname">First Name <span style="color:red;">*</span></label>
+                                                <input type="text" name="fname" class="form-control" placeholder="First name" aria-label="First name" id="inputGroup-sizing-default">
+                                          </div>
+                                          <div class="col">
+                                                <label for="lname">Last Name <span style="color:red;">*</span></label>
+                                                <input type="text" name="lname" class="form-control" placeholder="Last name" aria-label="Last name" id="inputGroup-sizing-default">
+                                          </div>
+                                        </div>
+                                        <div class="row g-6" style="padding-bottom:3%;">
+                                          <div class="col">
+                                                <label for="email">Email <span style="color:red;">*</span></label>
+                                                <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Email" id="inputGroup-sizing-default">
+                                          </div>
+                                          <div class="col">
+                                                <label for="phoneno">Phone No <span style="color:red;">*</span></label>
+                                                <input type="number"  name="phoneno" class="form-control" placeholder="Phone no" aria-label="Phone" id="inputGroup-sizing-default">
+                                          </div>
+                                        </div>
+                                        <div class="row g-6" style="padding-bottom:3%;">
+
+                                            <div class="col">
+                                                 <label for="Gender">Marital Status <span style="color:red;">*</span></label>
+                                                 <select class="form-control" id="marital" name="marital">
+                                                            <option selected>Select status</option>
+                                                            <option value="single">Single</option>
+                                                            <option value="married">Married</option>
+                                                  </select>
+                                          </div>
+                                               <div class="col">
+                                                 <label for="religion">Religion <span style="color:red;">*</span></label>
+                                                 <input type="text" name="religion" class="form-control" placeholder="Religion" aria-label="Religion" id="inputGroup-sizing-default">
+                                          </div>
+                                        </div>
+                                        <div class="row g-6" style="padding-bottom:3%;">
+
+                                            <div class="col">
+                                                 <label for="Gender">Gender <span style="color:red;">*</span></label>
+                                                 <select class="form-control" id="gender" name="gender">
+                                                            <option selected>Select Gender</option>
+                                                            <option value="male">Male</option>
+                                                            <option value="female">Female</option>
+                                                  </select>
+                                          </div>
+                                               <div class="col">
+                                                 <label for="dob">Date of Birth <span style="color:red;">*</span></label>
+                                                 <input type="date" name="birth" class="form-control" placeholder="DoB" aria-label="DoB" id="inputGroup-sizing-default">
+                                          </div>
+                                        </div>
+                                        <div class="row g-6" style="padding-bottom:3%;">
+                                             <div class="col">
+                                                 <label for="joing">Joining Date <span style="color:red;">*</span></label>
+                                                 <input type="date" name="join" class="form-control" placeholder="DoE" aria-label="DoE" id="inputGroup-sizing-default">
+                                          </div>
+
+                                            <div class="col">
+                                                     <label for="Department">Department</label>
+                                                      <select class="form-control" id="dept" name="dept">
+                                                            <option selected>Select Department</option>
+                                                           {% for dept in finddept %}
+                                                            <option value="{{ dept.name }}">{{ dept.name }}</option>
+                                                            {% endfor %}
+                                                      </select>
+                                                </div>
+                                        </div>
+                                         <div class="row g-6" style="padding-bottom:3%;">
+
+                                            <div class="col">
+                                                 <label for="nationality">Nationality<span style="color:red;">*</span></label>
+                                                 <input type="text" name="nation" class="form-control" placeholder="nationality" aria-label="nationality" id="inputGroup-sizing-default">
+                                          </div>
+
+                                              </div>
+                                         <div class="row g-6" style="padding-bottom:3%;">
+                                                <div class="col">
+                                                     <label for="deptcomment">Department Comment <span style="color:red;">*</span></label>
+                                                     <textarea class="form-control" name="deptcom" placeholder="Department Comment" aria-label="Dept.comment" rows="3"></textarea>
+                                              </div>
+                                        </div>
+                                  <div class="modal-footer" style="padding-left:40%;justify-content: flex-start;">
+                                    <button type="submit" class="btn btn-block btn-warning" style="width:140px;height:40px;border-radius:30px;">Submit</button>
+                                  </div>
+                                      </form>
+                               {% else %}
+								  <div class="alert alert-warning">No department register at this moment, please add one..</div>
+                               {% endif %}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!--END TEST-->
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                       <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table id="zero_config" class="table table-striped custom-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Email</th>
+                                                        <th>Contact</th>
+                                                        <th>Gender</th>
+                                                        <th>DoB</th>
+                                                        <th>DoE</th>
+                                                        <th>Department</th>
+                                                         <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                   {% for temp,display in displaystaff %}
+                                                        <tr>
+                                                           <td>{{ temp +1 }}</td>
+                                                           <td>
+                                                            <h2 class="table-avatar">
+                                                                <a href="#" class="avatar">
+                                                            {% if  display.APPIMAGE| length !=0 %}
+                                                                   <img src="{{ asset('/web/uploads/photos/' ~ display.APPIMAGE) }}"/>
+                                                            {% else %}
+                                                                    <img src="{{ asset('img/users.png') }}"/>
+                                                            {% endif %}
+                                                                </a>
+                                                                <a href="#">{{display.name}} </a>
+                                                            </h2>
+											                </td>
+                                                            <td>{{ display.email }}</td>
+                                                            <td>{{ display.phoneno }}</td>
+                                                            <td>{{ display.gender }}</td>
+                                                            <td>{{ display.do_b|date("F jS Y \\a\\t g:ia")  }}</td>
+                                                            <td>{{ display.do_m|date("F jS Y \\a\\t g:ia")  }}</td>
+                                                             <td>{{ display.department}}</td>
+                                                            <td>
+                                                                  <a href="/HoDs/{{ display.ID }}/edit/name">
+                                                                    <i class="fa fa-edit font-18" style="color:darkorange;"></i>
+                                                                  </a>&nbsp;
+                                                          			<a  href="#" data-bs-toggle="modal" data-bs-target="#delete_promotion"><i class="fa fa-trash-o font-18" style="color:red;"></i></a>
+										                	</td>
+									                    </tr>
+                                                                                <!-- Delete Promotion Modal -->
+                                                        <div class="modal custom-modal fade" id="delete_promotion" role="dialog">
+                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-body">
+                                                                        <div class="form-header">
+                                                                            <h3>Delete Head of Department</h3>
+                                                                            <p>Are you sure want to delete?</p>
+                                                                        </div>
+                                                                        <div class="modal-btn delete-action">
+                                                                            <div class="row">
+                                                                                <div class="col-6">
+                                                                                    <a href="/remove/{{ display.ID }}" class="btn btn-primary continue-btn">Delete</a>
+                                                                                </div>
+                                                                                <div class="col-6">
+                                                                                    <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /Delete Promotion Modal -->
+
+                                                   {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+
+        <script>
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable();
+    </script>
+  {% endif %}
+            {% endif %}
+{% endblock %}

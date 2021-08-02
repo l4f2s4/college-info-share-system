@@ -1,0 +1,210 @@
+	    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper" data-layout="vertical" data-navbarbg="#0864AF;" data-sidebartype="full"
+        data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+			<!-- Header -->
+          <header class="header" >
+            <nav class="navbar navbar-fixed-top navbar-expand-md navbar-dark" style="height: 80px;" >
+                        <div class="header-left" >
+
+                              <a href="#" class="logo">
+                                                      <img src="{{ asset('img/udsm.png')}}"  width="120" height="40" style="border-radius: 50%;"/>
+                            </a>
+
+                       </div>
+
+                     <a   class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
+                            class="fa fa-bars font-24" style="color:white;"></i></a>
+
+
+
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-collapse collapse">
+                    <!-- ============================================================== -->
+                    <!-- toggle and nav items -->
+                    <!-- ============================================================== -->
+
+                    <ul class="navbar-nav float-start me-auto">
+                        <li class="nav-item d-none d-lg-block"><a
+                                class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)"
+                                data-sidebartype="mini-sidebar"><i class="fa fa-bars font-24" style="color:white;"></i></a></li>
+
+                    </ul>
+                    <!-- ============================================================== -->
+                    <!-- Right side toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="nav-item dropdown has-arrow main-drop">
+                         <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                             <span class="user-img">
+                                   {% if  app.user.userimage| length !=0 %}
+                                       <img src="{{ asset('/web/uploads/photos/' ~ app.user.userimage) }}" alt="" height="30" width="30" style="border-radius:50%;" />
+                                   {% else %}
+                                       <img src="{{ asset('img/users.png') }}" alt="" height="30" width="30" style="border-radius:50%;" />
+                                   {% endif %}
+							<span class="status online"></span></span>
+							<span>{{ app.user.title }}</span>
+                              </a>
+                            <ul class="dropdown-menu dropdown-menu-end user-dd animated" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="{{ path('profile') }}"><i
+                                        class="ms-1"></i> My Profile</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path('app_logout') }}"><i
+                                        class="fa fa-power-off me-1 ms-1"></i> Logout</a>
+                            </ul>
+
+                    </ul>
+
+                </div>
+            </nav>
+				<!-- /Header Menu -->
+
+				<!-- Mobile Menu -->
+				<div class="dropdown mobile-user-menu">
+				          <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="fa fa-ellipsis-v"></i>
+                              </a>
+                            <ul class="dropdown-menu dropdown-menu-end user-dd animated" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="{{ path('profile') }}"><i
+                                        class="ms-1"></i> My Profile</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path('app_logout') }}"><i
+                                        class="fa fa-power-off me-1 ms-1"></i> Logout</a>
+                            </ul>
+				</div>
+				<!-- /Mobile Menu -->
+
+			<!-- /Header -->
+        </header>
+
+			<!-- Sidebar -->
+            <div class="left-sidebar" style="background-color: #38574D;position: fixed;">
+               <!-- Sidebar scroll-->
+            <div class="scroll-sidebar" >
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav" style="background-color: transparent;">
+                    <ul id="sidebarnav" class="pt-4" >
+                        <li class="sidebar-item"> <a class="sidebar-link active waves-effect waves-dark sidebar-link"
+                                href="{{ path('pass') }}" aria-expanded="false"><i class="fa fa-dashboard" ></i><span
+                                    class="hide-menu">Dashboard</span></a>
+                        </li>
+                         <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
+                                href="javascript:void(0)" aria-expanded="false"><i class="fa fa-university" ></i><span
+                                    class="hide-menu">College/School</span></a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                  <li class="sidebar-item"> <a class="sidebar-link"
+                                href="{{ path('adminuser') }}">
+                                          <i class="fa fa-user" ></i><span
+                                    class="hide-menu">System Administrator</span></a>
+                                   </li>
+                                  <li class="sidebar-item"><a href="{{ path('programme') }}" class="sidebar-link"><i
+                                            class="fa fa-plus-square" ></i><span class="hide-menu"> Programme registered
+                                        </span></a>
+                                </li>
+                                 <li class="sidebar-item"><a href="{{ path('department') }}" class="sidebar-link"><i
+                                            class="fa fa-cubes" ></i><span class="hide-menu"> Department
+                                        </span></a>
+                                </li>
+                                  <li class="sidebar-item"><a href="{{ path('project') }}" class="sidebar-link"><i
+                                            class="fa fa-plus-square" ></i><span class="hide-menu"> Project
+                                        </span></a>
+                                </li>
+                                <li class="sidebar-item"><a href="{{ path('head') }}" class="sidebar-link"><i
+                                            class="fa fa-group" ></i><span class="hide-menu"> HODs
+                                        </span></a>
+                                </li>
+
+                                 <li class="sidebar-item"><a href="{{ path('dashboard') }}" class="sidebar-link"><i
+                                            class="fa fa-group" ></i><span class="hide-menu">Staff members
+                                        </span></a>
+                                </li>
+                                  <li class="sidebar-item">
+                                      <a class="sidebar-link has-arrow waves-effect waves-dark"
+                                     href="javascript:void(0)" aria-expanded="false"><i class="fa fa-graduation-cap" ></i>
+                                          <span class="hide-menu">Students</span></a>
+                                      <ul aria-expanded="false" class="collapse  first-level">
+                                       <li class="sidebar-item"><a href="{{ path('undergraduate') }}" class="sidebar-link"><i
+                                            class="fa fa-user" ></i><span class="hide-menu"> Undergraduate student
+                                           </span></a>
+                                        </li>
+                                        <li class="sidebar-item"><a href="{{ path('postgraduate') }}" class="sidebar-link"><i
+                                                    class="fa fa-user-plus" ></i><span class="hide-menu"> Postgraduate student
+                                                </span></a>
+                                        </li>
+                                  </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                                   <a class="sidebar-link"
+                                    href="{{ path('promotion') }}" aria-expanded="false"><i class="fa fa-bullhorn" ></i><span
+                                    class="hide-menu">Promotion</span></a>
+                              </li>
+                          <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
+                                href="javascript:void(0)" aria-expanded="false">
+                                          <i class="fa fa-cut" ></i><span
+                                    class="hide-menu">Leaves</span></a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                               <li class="sidebar-item">
+                                   <a class="sidebar-link "
+                                    href="{{ path('leaves') }}" >
+                                       <i class="fa fa-linux" ></i>
+                                       <span class="hide-menu">leaves (Admin)</span></a>
+                                  </li>
+                                <li class="sidebar-item">
+                                   <a class="sidebar-link "
+                                    href="{{ path('leavesemployee') }}">
+                                       <i class="fa fa-group" ></i>
+                                       <span class="hide-menu">leaves (Employee)</span></a>
+                                  </li>
+                                <li class="sidebar-item">
+                                   <a class="sidebar-link "
+                                    href="{{ path('leavestype') }}">
+                                       <i class="fa fa-tasks" ></i>
+                                       <span class="hide-menu">leaves type</span></a>
+                                  </li>
+                                 <li class="sidebar-item">
+                                   <a class="sidebar-link "
+                                    href="{{ path('leavessetting') }}">
+                                       <i class="fa fa-group" ></i>
+                                       <span class="hide-menu">leaves Settings</span></a>
+                                  </li>
+
+                            </ul>
+                          </li>
+                        <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
+                                href="javascript:void(0)" aria-expanded="false"><i class="fa fa-cog"></i><span
+                                    class="hide-menu">Settings </span></a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item"><a href="{{ path('security') }}" class="sidebar-link"><i
+                                            class="fa fa-lock font-20"></i><span class="hide-menu">Change password
+                                        </span></a>
+                                </li>
+                                <li class="sidebar-item"><a href="{{ path('themessetting') }}" class="sidebar-link"><i
+                                            class="fa fa-image font-20"></i><span class="hide-menu">Themes setting
+                                        </span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+            </div>
+			<!-- /Sidebar -->
+
+			<!-- Page Wrapper -->

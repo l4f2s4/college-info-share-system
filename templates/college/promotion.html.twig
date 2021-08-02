@@ -1,0 +1,235 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if app.user %}
+         {% if app.user.title=='administrator' %}
+             {% include('security/usernavbar.html.twig') %}
+         {% else %}
+             {% include('college/usernavbar.html.twig') %}
+        {% endif %}
+          <div class="page-wrapper">
+
+				<!-- Page Content -->
+                <div class="content container-fluid">
+
+					<!-- Page Header -->
+					<div class="page-header" style="padding-top: 20px;">
+						<div class="row">
+							<div class="col">
+								<h3 class="page-title">Promotion</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item">Dashboard</li>
+									<li class="breadcrumb-item active">Promotion</li>
+								</ul>
+							</div>
+							<div class="col-auto float-right ml-auto">
+								<a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_promotion"><i class="fa fa-plus"></i> Add Promotion</a>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+					<div class="alert col-md-5 col-lg-5 col-sm-12 col-xs-12 offset-4" >
+                                          {% for messages in app.flashes('promoted') %}
+                                                   <div class="offset-2" style="padding-bottom: 2%;">
+                                                   <span style="color:red;">
+                                                     {{ messages }}
+                                                   </span>
+                                                             </div>
+                                               {% endfor %}
+                                            </div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table-responsive">
+
+								<!-- Promotion Table -->
+								<table id="zero_config" class="table table-striped custom-table mb-0 datatable">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Promoted Employee </th>
+										 {%  if app.user.title !='HoDs' %}
+											<th>Department</th>
+										 {% endif %}
+											<th>Promotion Designation From </th>
+											<th>Promotion Designation To </th>
+											<th>Promotion Date </th>
+											<th class="text-right">Action</th>
+										</tr>
+									</thead>
+									<tbody>
+									{% for temp,display in displaypromo %}
+									{% if app.user.title =='HoDs' and display23 ==display.test %}
+										<tr>
+											<td>{{ temp + 1 }}</td>
+											<td>
+												<h2 class="table-avatar blue-link">
+													{{ display.Emp }}
+												</h2>
+											</td>
+											<td>{{ display.FRM }}</td>
+											<td>{{ display.TOPROMO }}</td>
+											<td>{{ display.PDT }}</td>
+											<td class="text-right">
+														<a href="/updatepromo/userinfo/available/{{ display.ID }}"><i class="fa fa-pencil font-18" style="color:darkorange;"></i></a>
+														<a  href="#" data-bs-toggle="modal" data-bs-target="#delete_promotion"><i class="fa fa-trash-o font-18" style="color:red;"></i></a>
+											</td>
+										</tr>
+															<!-- Delete Promotion Modal -->
+				<div class="modal custom-modal fade" id="delete_promotion" role="dialog">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-header">
+									<h3>Delete Promotion</h3>
+									<p>Are you sure want to delete?</p>
+								</div>
+								<div class="modal-btn delete-action">
+									<div class="row">
+										<div class="col-6">
+											<a href="/remove/promotion/available/{{ display.ID }}/{{display.me}}" class="btn btn-primary continue-btn">Delete</a>
+										</div>
+										<div class="col-6">
+											<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Delete Promotion Modal -->
+									{% endif %}
+									{% if app.user.title =='administrator' %}
+										<tr>
+											<td>{{ temp + 1 }}</td>
+											<td>
+                                                            <h2 class="table-avatar">
+                                                                <a href="#" class="avatar">
+                                                            {% if  display.APPIMAGE| length !=0 %}
+                                                                   <img src="{{ asset('/web/uploads/photos/' ~ display.APPIMAGE) }}"/>
+                                                            {% else %}
+                                                                    <img src="{{ asset('img/users.png') }}"/>
+                                                            {% endif %}
+                                                                </a>
+                                                                <a href="#">{{display.Emp}} </a>
+                                                            </h2>
+											                </td>
+											<td>{{ display.NAME }}</td>
+											<td>{{ display.FRM }}</td>
+											<td>{{ display.TOPROMO }}</td>
+											<td>{{ display.PDT }}</td>
+											<td class="text-right">
+														<a  href="/updatepromo/userinfo/available/{{ display.ID }}"><i class="fa fa-pencil font-18" style="color:darkorange;"></i></a>&nbsp;
+														<a  href="#" data-bs-toggle="modal" data-bs-target="#delete_promotion"><i class="fa fa-trash-o font-18" style="color:red;"></i></a>
+											</td>
+										</tr>
+
+										<!-- Delete Promotion Modal -->
+				<div class="modal custom-modal fade" id="delete_promotion" role="dialog">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-header">
+									<h3>Delete Promotion</h3>
+									<p>Are you sure want to delete?</p>
+								</div>
+								<div class="modal-btn delete-action">
+									<div class="row">
+										<div class="col-6">
+											<a href="/remove/promotion/available/{{ display.ID }}/{{display.me}}" class="btn btn-primary continue-btn">Delete</a>
+										</div>
+										<div class="col-6">
+											<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Delete Promotion Modal -->
+									{% endif %}
+									{% endfor %}
+									</tbody>
+								</table>
+								<!-- /Promotion Table -->
+
+							</div>
+						</div>
+					</div>
+                </div>
+				<!-- /Page Content -->
+
+				<!-- Add Promotion Modal -->
+				<div id="add_promotion" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Add Promotion</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								     {% for messages in app.flashes('promoted') %}
+                                                   <div class="offset-2" style="padding-bottom: 2%;">
+													   <span style="color:red;">
+														 {{ messages }}
+													   </span>
+                                                  </div>
+                                     {% endfor %}
+								<form method="post">
+									<div class="form-group">
+										<label>Promotion For <span class="text-danger">*</span></label>
+										<input class="form-control" name="employee" type="email">
+										  {% for messages in app.flashes('said') %}
+                                                   <div  style="padding-bottom: 2%;">
+													   <span style="color:red;">
+														 {{ messages }}
+													   </span>
+												   </div>
+                                     {% endfor %}
+									</div>
+									<div class="form-group">
+										<label>Promotion From <span class="text-danger">*</span></label>
+										<input class="form-control" type="text" name="admin" value="Administration" readonly>
+									</div>
+									<div class="form-group">
+										<label>Promotion To <span class="text-danger">*</span></label>
+										<select class="form-control" name="category" >
+											<option value="instructor">Instructor</option>
+											<option value="staff">Staff</option>
+											<option value="HoDs">Head of Department</option>
+										</select>
+									</div>
+
+									<div class="form-group">
+										<label>Promotion Date <span class="text-danger">*</span></label>
+											<input type="date" class="form-control" name="promo" aria-label="promo" id="inputGroup-sizing-default">
+									</div>
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Add Promotion Modal -->
+
+
+
+            </div>
+
+       <script>
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable();
+   //     $("[data-bs-toggle=popover]")
+//.popover({html:true})
+
+    </script>
+
+    {% endif %}
+{% endblock %}

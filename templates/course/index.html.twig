@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if app.user %}
+       {% if app.user.title=='staff' %}
+             {% include('college/userstaff.html.twig') %}
+        {% endif %}
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+                 <div class="page-header" style="padding-top: 20px;">
+						<div class="row align-items-center">
+							<div class="col">
+                               <h3 class="page-title">Your Course</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active">Course</li>
+								</ul>
+							</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3" style="padding-top: 3%;">
+								<div class="stats-info">
+									<h6 class="text-success">Course Assigned</h6>
+									<h4>{{ findusertest|length}}</h4>
+								</div>
+							</div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table id="zero_config" class="table table-striped custom-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                          <th>Course name</th>
+                                                          <th>Course short name</th>
+                                                          <th>Credits</th>
+                                                         <th class="text-right">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                   {% for temp,programme in findusertest %}
+
+                                                    <tr class="odd">
+                                                        <td>{{ temp + 1 }}</td>
+                                                        <td>{{ programme.coursename}}</td>
+                                                        <td>{{ programme.cshortname}}</td>
+                                                        <td>{{ programme.credits}}</td>
+                                                        <td>
+                                                            <a href="/course/addstudent/anon/{{ programme.id }}/{{ programme.coursename }}" >
+                                                             <i class="fa fa-user-plus font-18" style="color:green;"></i>
+                                                              </a>
+                                                        </td>
+
+                                                     </tr>
+                                                  {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+
+        <script>
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable();
+    </script>
+
+            {% endif %}
+{% endblock %}

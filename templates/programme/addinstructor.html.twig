@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if app.user %}
+       {% if app.user.title=='administrator' %}
+             {% include('security/usernavbar.html.twig') %}
+        {% else %}
+             {% include('college/usernavbar.html.twig') %}
+        {% endif %}
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+                 <div class="page-header" style="padding-top: 20px;">
+						<div class="row align-items-center">
+							<div class="col">
+                               <h3 class="page-title">{{ programme }}</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active">Instructor</li>
+								</ul>
+							</div>
+                               <div class="col-auto float-right ml-auto" style="padding-bottom: 2%;">
+								<a href="#" class="btn btn-primary" style="color: white;" data-bs-toggle="modal" data-bs-target="#myForm"><i class="fa fa-plus"></i> Add Instructor</a>
+                             </div>
+                                   <!---START TEST--->
+                                   <div class="alert col-md-5 col-lg-5 col-sm-12 col-xs-12 offset-4" style="background:green;">
+                                          {% for messages in app.flashes('addme') %}
+                                                   <div class="offset-2" style="padding-bottom: 2%;">
+                                                   <span style="color:red;">
+                                                     {{ messages }}
+                                                   </span>
+                                                             </div>
+                                               {% endfor %}
+                                            </div>
+                                    <div class="modal fade" id="myForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                                      <div class="modal-dialog modal-md" >
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel" style="padding-left:40%;">Add Instructor</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                           <div class="modal-body" >
+                                                {% if findCname|length != 0 %}
+                                          
+                                                  <form method="post">
+                                                <div class="row g-6" style="padding-bottom:3%;">
+                                                  <div class="col" >
+                                                        <label for="project">Instructor Email <span style="color:red;">*</span></label>
+                                                        <input type="email" name="project" class="form-control" placeholder="Enter email" aria-label="Email" id="inputGroup-sizing-default">
+                                                  </div>
+                                                </div>
+                                          <div class="modal-footer" style="padding-left:40%;justify-content: flex-start;">
+                                            <button type="submit" class="btn btn-primary btn-block" style="width:140px;height:40px;border-radius:30px;">Submit</button>
+                                          </div>
+                                              </form>
+                                             {% else %}
+                                                 <div class="alert alert-warning">No course register at this moment, please add one..</div>
+                                             {% endif %}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <!--END TEST-->
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+
+                            <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table id="zero_config" class="table table-striped custom-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Instructor Name</th>
+                                                        <th>Instructor Email</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                   {% for temp,course in findcourse %}
+                                                    <tr class="odd">
+                                                        <td>{{ temp + 1 }}</td>
+                                                             <td>
+                                                            <h2 class="table-avatar">
+                                                                <a href="#" class="avatar">
+                                                            {% if  course.APP| length !=0 %}
+                                                                   <img src="{{ asset('/web/uploads/photos/' ~ course.APP) }}"/>
+                                                            {% else %}
+                                                                    <img src="{{ asset('img/users.png') }}"/>
+                                                            {% endif %}
+                                                                </a>
+                                                                <a href="#">{{course.Name}} </a>
+                                                            </h2>
+											                </td>
+                                                        <td>{{ course.email}}</td>
+                                                     </tr>
+                                                  {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+
+        <script>
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable();
+    </script>
+
+            {% endif %}
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig'%}
+
+{% block title %}Notification{% endblock %}
+
+{% block body %}
+<div class="account-wrapper" style="padding-top:15%;">
+        <div class="account-page" >
+            <div  class="main-wrapper" >
+
+            <div class="account-content" style="background: transparent;">
+                <div class="account-title" style="color:black;">Access Denied</div>
+                <div class="account-subtitle" style="color:red;">{{ success }}</div>
+
+               <div class="account-footer">
+                    <a href="{{ path('app_login') }}" class="btn btn-warning" style="color:white;">Go Back</a>
+                 </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock  %}

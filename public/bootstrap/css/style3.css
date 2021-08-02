@@ -1,0 +1,36 @@
+.container{
+	width:1200px;
+	height:1400px;
+	background-color:pink;
+	position:absolute;
+	margin:83px83px83px83px;
+}
+.col-md-3{
+	color:white;
+}
+.me{
+	background-color:red;
+}
+.you{
+	background-color:red;
+}
+.mimi{
+	background-color:red;
+}
+.shely{
+	width:1170px;
+	height:250px;
+	background-color:orange;
+	margin-top:90px;
+	margin-right:80px;
+}
+.wewe{
+	width:600px;
+	height:250px;
+	background-color:gray;
+}
+.no{
+    width:570px;
+	height:250px;
+background-color:green;	
+}

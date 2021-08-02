@@ -1,0 +1,348 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if app.user %}
+        {% if app.user.title=='administrator' %}
+             {% include('security/usernavbar.html.twig') %}
+        {% elseif app.user.title == 'HoDs' %}
+             {% include('college/usernavbar.html.twig') %}
+         {% else %}
+             {% include('college/userstaff.html.twig') %}
+        {% endif %}
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+					  <div class="page-header" style="padding-top:20px; ">
+						<div class="row">
+							<div class="col">
+                                <h3 class="page-title">Projects</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+									<li class="breadcrumb-item active">Project</li>
+								</ul>
+							</div>
+                        {% if app.user.title == 'administrator' %}
+                           <div class="col-auto float-right ml-auto">
+								<a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#myForm"><i class="fa fa-plus"></i> Create Project</a>
+                             </div>
+                           <div class="alert col-md-5 col-lg-5 col-sm-12 col-xs-12 offset-4">    
+
+                              {% for messages in app.flashes('project') %}
+                                                   <div class="offset-2" style="padding-bottom: 2%;">
+                                                   <span style="color:red;">
+                                                     {{ messages }}
+                                                   </span>
+                                                             </div>
+                                               {% endfor %}
+                                </div>    
+                             
+                            <!---START TEST--->
+                            <div class="modal fade" id="myForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                              <div class="modal-dialog modal-md" >
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel" style="padding-left:40%;">Create Project</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body" >
+                                      {% if finddept|length != 0 %}
+                                          
+                                             <form method="post">
+                                       <div class="row " >
+                                             <div class="col-sm-6" >
+                                                 <div class="form-group">
+                                                      <label for="dept">Project Name <span style="color:red;">*</span></label>
+                                                      <input type="text" name="projectname" class="form-control" placeholder="Project  name" aria-label="Project name" id="inputGroup-sizing-default">
+                                                 </div>
+                                             </div>
+                                             <div class="col-sm-6">
+                                                 <div class="form-group">
+                                                     <label for="Department">Assign Department</label>
+                                                      <select class="form-control" id="dept" name="dept">
+                                                            <option selected>Select Department</option>
+                                                           {% for dept in finddept %}
+
+                                                            <option value="{{ dept.name }}">{{ dept.name }}</option>
+
+                                                            {% endfor %}
+                                                      </select>
+                                                 </div>
+                                          </div>
+
+                                        </div>
+                                  <div class="row">
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label>Start Date</label>
+													<input class="form-control" name="start" type="date">
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label>End Date</label>
+													<input class="form-control" name="end" type="date">
+											</div>
+										</div>
+									</div>
+                                   <div class="row">
+                                   <div class="col-sm-12">
+											<div class="form-group">
+												<label>Priority</label>
+												<select class="form-control" name="priority">
+													<option value="high">High</option>
+													<option value="medium">Medium</option>
+													<option value="low">Low</option>
+												</select>
+											</div>
+										</div>
+                                   <div class="col-sm-12">
+										<div class="form-group">
+										<label>Description</label>
+										<textarea rows="4" class="form-control" placeholder="Enter your message here" name="descr"></textarea>
+									</div>
+										</div>
+
+									</div>
+
+
+                                  <div class="modal-footer" style="padding-left:40%;justify-content: flex-start;">
+                                    <button type="submit" class="btn btn-block btn-warning" style="width:140px;height:40px;border-radius:30px;">Submit</button>
+                                  </div>
+                                      </form>
+                                     {% else %}
+								    <div class="alert alert-warning">No department register at this moment, please add one..</div>
+                                  {% endif %}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!--END TEST-->
+                        {% endif %}
+
+                            <!-- hod area-->
+                              {% if app.user.title == 'HoDs' %}
+                           <div class="col-auto float-right ml-auto">
+								<a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#myForm"><i class="fa fa-plus"></i> Create Project</a>
+                             </div>
+                            <!---START TEST--->
+                            <div class="modal fade" id="myForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                              <div class="modal-dialog modal-md" >
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel" style="padding-left:40%;">Create Project</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body" >
+                                      {% if finddept|length != 0 %}
+                                           {% for messages in app.flashes('projecthead') %}
+                                                   <div class="offset-2" style="padding-bottom: 2%;">
+                                                   <span style="color:red;">
+                                                     {{ messages }}
+                                                   </span>
+                                                             </div>
+                                               {% endfor %}
+                                             <form method="post">
+                                       <div class="row " >
+                                             <div class="col-sm-12" >
+                                                 <div class="form-group">
+                                                      <label for="dept">Project Name <span style="color:red;">*</span></label>
+                                                      <input type="text" name="projectname" class="form-control" placeholder="Project  name" aria-label="Project name" id="inputGroup-sizing-default">
+                                                 </div>
+                                             </div>
+
+                                        </div>
+                                  <div class="row">
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label>Start Date</label>
+													<input class="form-control" name="start" type="date">
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label>End Date</label>
+													<input class="form-control" name="end" type="date">
+											</div>
+										</div>
+									</div>
+                                   <div class="row">
+                                   <div class="col-sm-12">
+											<div class="form-group">
+												<label>Priority</label>
+												<select class="form-control" name="priority">
+													<option value="high">High</option>
+													<option value="medium">Medium</option>
+													<option value="low">Low</option>
+												</select>
+											</div>
+										</div>
+                                   <div class="col-sm-12">
+										<div class="form-group">
+										<label>Description</label>
+										<textarea rows="4" class="form-control" placeholder="Enter your message here" name="descr"></textarea>
+									</div>
+										</div>
+
+									</div>
+
+
+                                  <div class="modal-footer" style="padding-left:40%;justify-content: flex-start;">
+                                    <button type="submit" class="btn btn-block btn-warning" style="width:140px;height:40px;border-radius:30px;">Submit</button>
+                                  </div>
+                                      </form>
+                                     {% else %}
+								    <div class="alert alert-warning">No department register at this moment, please ask you admin to add one..</div>
+                                  {% endif %}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!--END TEST-->
+                        {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                     <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table id="zero_config" class="table table-striped custom-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Project Name</th>
+                                                        {% if app.user.title=='administrator' %}
+                                                        <th>Team</th>
+                                                        {% endif %}
+                                                        <th>Deadline</th>
+											            <th>Priority</th>
+											             <th>Status</th>
+                                                        <th class="text-right">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                              {% for temp,project in display %}
+                                                  {% if display23== project.ID and (app.user.title == 'staff' or app.user.title =='HoDs') %}
+                                                        <tr class="odd">
+                                                            <td>{{ temp + 1 }}</td>
+                                                            <td>{{ project.project}}</td>
+                                                          {% if app.user.title=='administrator' %}
+                                                            <td>{{ project.department}}</td>
+                                                          {% endif %}
+                                                              <td>{{ project.end}}</td>
+                                                             {% if project.priority=='high' %}
+                                                             <td><i class="fa fa-dot-circle-o text-danger"></i> {{ project.priority}}</td>
+                                                           {% elseif project.priority=='medium' %}
+                                                             <td><i class="fa fa-dot-circle-o text-warning"></i> {{ project.priority}}</td>
+                                                            {% else %}
+                                                             <td><i class="fa fa-dot-circle-o text-success"></i> {{ project.priority}}</td>
+                                                           {% endif %}
+                                                           {% if project.status=='active' %}
+                                                             <td><i class="fa fa-dot-circle-o text-success"></i> {{ project.status}}</td>
+                                                            {% else %}
+                                                             <td><i class="fa fa-dot-circle-o text-danger"></i> {{ project.status}}</td>
+                                                            {% endif %}
+                                                            <td class="text-right">
+                                                             {% if app.user.title=='HoDs' %}
+                                                                {% if project.status=='active' %}
+                                                                   <a href="/dashboard/{{project.project}}/{{ project.id }}/adduser">
+                                                                    <i class="fa fa-user-plus font-18" style="color:green;"></i>
+                                                                  </a>&nbsp;
+                                                                  <a href="/project/{{ project.id }}/edit/name">
+                                                                    <i class="fa fa-edit font-18" style="color:darkorange;"></i>
+                                                                  </a>&nbsp;
+                                                                     <a href="/project/{{ project.id }}/close/means/end" >
+                                                                    <i class="fa fa-lock font-18" style="color:red;"></i>
+                                                                  </a>&nbsp;
+                                                                 {% else %}
+                                                                   <span style="color: red;">closed</span>
+                                                             &nbsp;        <a href="/project/{{ project.id }}/buytime">
+                                                                    <i class="fa fa-unlock font-18" style="color:green;"></i>
+                                                                  </a>&nbsp;
+                                                                {% endif %}
+                                                           {% endif %}
+                                                                <!--start staff -->
+                                                             {% if app.user.title=='staff' %}
+                                                                {% if project.status=='active' %}
+                                                                   <a href="/dashboard/{{project.project}}/{{ project.id }}/adduser">
+                                                                    <i class="fa fa-user-plus font-18" style="color:green;"></i>
+                                                                  </a>
+                                                                 {% else %}
+                                                                   <span class="fa fa-closed-captioning font-18">closed</span>
+                                                                {% endif %}
+                                                           {% endif %}
+                                                                <!--staff-->
+                                                        </td>
+
+                                                    </tr>
+                                                   {% endif %}
+                                                   {% if app.user.title=='administrator' %}
+
+                                                        <tr class="odd">
+                                                            <td>{{ temp +1}}</td>
+                                                            <td>{{ project.project}}</td>
+                                                            <td>{{ project.department}}</td>
+                                                             <td>{{ project.end}}</td>
+                                                         {% if project.priority=='high' %}
+                                                             <td><i class="fa fa-dot-circle-o text-danger"></i> {{ project.priority}}</td>
+                                                           {% elseif project.priority=='medium' %}
+                                                             <td><i class="fa fa-dot-circle-o text-warning"></i> {{ project.priority}}</td>
+                                                            {% else %}
+                                                             <td><i class="fa fa-dot-circle-o text-success"></i> {{ project.priority}}</td>
+                                                           {% endif %}
+                                                          {% if project.status=='active' %}
+                                                             <td><i class="fa fa-dot-circle-o text-success"></i> {{ project.status}}</td>
+                                                           {% else %}
+                                                             <td><i class="fa fa-dot-circle-o text-danger"></i> {{ project.status}}</td>
+                                                           {% endif %}
+                                                              <td>
+                                                                  {% if project.status=='active' %}
+                                                                  <a href="/dashboard/{{project.project}}/{{ project.id }}/adduser">
+                                                                        <i class="fa fa-user-plus font-18" style="color:green;"></i>
+                                                                      </a>&nbsp;
+                                                                  <a href="/project/{{ project.id }}/edit/name">
+                                                                    <i class="fa fa-edit font-18" style="color:darkorange;"></i>
+                                                                  </a>&nbsp;
+                                                                 <a href="/project/{{project.id}}/close/means/end" >
+                                                                    <i class="fa fa-lock font-18" style="color:red;"></i>
+                                                                  </a>&nbsp;
+                                                                <a  href="/remove/project/available/remain/empty/{{ project.id }}"><i class="fa fa-trash-o font-18" style="color:red;"></i></a>
+                                                                      </td>
+
+                                                            {% else %}
+                                                                <span  style="color: red;">closed</span>
+                                                             &nbsp;   <a href="/project/{{ project.id }}/buytime">
+
+                                                                    <i class="fa fa-unlock font-18" style="color:green;"></i>
+                                                                  </a>&nbsp;
+                                                                 <a  href="/remove/project/available/remain/empty/{{ project.id }}" ><i class="fa fa-trash-o font-18" style="color:red;"></i></a>
+                                                                    </td>
+
+                                                             &nbsp;  {% endif %}
+
+                                                      {% endif %}
+                                                    </tr>
+                                              {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+
+        <script>
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable();
+    </script>
+
+            {% endif %}
+{% endblock %}

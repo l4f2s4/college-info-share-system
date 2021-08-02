@@ -1,0 +1,511 @@
+h1.title Material Design Chat
+
+.wrapper
+  nav#nav.nav
+    .default-nav
+      .main-nav
+        .toggle
+        .main-nav-item
+          a.main-nav-item-link(href="#") Blake
+        .options
+  .inner#inner
+    .content#content
+  .bottom#bottom
+    textarea.input#input
+    .send#send
+    $blue: #2196F3;
+$dingy: #495B6A;
+$white: #ffffff;
+$purple: #673AB7;
+$yellow: #FFEB3B;
+$red: #F44336;
+$orange: #FF5722;
+$black: #333333;
+
+$nav: 100;
+
+$navHeight: 64px;
+
+$trans: 0.3s ease;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  /* position: relative; */
+  background-color: $orange;
+}
+
+.title {
+  color: $white;
+  text-align: center;
+  font-weight: 100;
+}
+
+.wrapper {
+  height: 520px;
+  width: 320px;
+  overflow: hidden;
+  background-color: white;
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  box-shadow:         0px 3px 3px 0px rgba(50, 50, 50, 0.5);
+  
+  .inner {
+    overflow: scroll;
+    height: 520px;
+    padding-top: $navHeight;
+    background: darken($white, 5%);
+    
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    //gotta hide windows scrollbars
+    
+    &::-webkit-scrollbar {
+      width: 0 !important
+    }
+    
+    .content {
+      padding: ($navHeight - ($navHeight/1.5)) / 2;
+      position: relative;
+      margin-bottom: $navHeight/2;
+    }
+  }
+  
+  transition: $trans;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $navHeight;
+  z-index: $nav;
+
+  .default-nav {
+    height: $navHeight;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: $nav + 10;
+
+    background-color: $red;
+    border-bottom: 3px solid darken($red, 10%);;
+    color: $white;
+
+    -webkit-box-shadow: 0px 3px 3px 0px rgba(50, 50, 50, 0.1);
+    -moz-box-shadow:    0px 3px 3px 0px rgba(50, 50, 50, 0.1);
+    box-shadow:         0px 3px 3px 0px rgba(50, 50, 50, 0.1);
+
+    .main-nav {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: $navHeight;
+      top: 0;
+
+      margin: 0;
+      padding: 0;
+
+      list-style: none;
+      
+      .toggle {
+        height: 32px;
+        width: 32px;
+        background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/104946/ic_arrow_back_white_48dp.png);
+        background-size: contain;
+        margin: 16px;
+        float: left;
+        
+        &:hover {
+          cursor: pointer;
+        }
+      }
+      
+      .options {
+        height: 32px;
+        width: 32px;
+        background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/104946/ic_more_vert_white_48dp.png);
+        background-size: contain;
+        margin: 16px;
+        position: absolute;
+        right: 0;
+        
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .main-nav-item {
+        float: left;
+        height: $navHeight;
+        margin-right: 50px;
+        position: relative;
+
+        // text-align: center;
+        line-height: $navHeight;
+
+        .main-nav-item-link {
+          display: block;
+          position: relative;
+          height: $navHeight;
+          width: 100%;
+
+          text-align: center;
+          line-height: $navHeight;
+          text-decoration: none;
+          color: inherit;
+
+          transition: $trans;
+        }
+
+        transition: $trans;
+      }
+      
+      transition: $trans;
+    }
+
+    transition: $trans;
+  }
+  
+  transition: $trans;
+}
+
+.bottom {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: $navHeight;
+  background: $white;
+  
+  /* box-shadow: 0px -3px 3px 0px rgba(50, 50, 50, 0.1); */
+  
+  .input {
+    height: $navHeight;
+    background: $white;
+    border: none;
+    width: calc(100% - #{$navHeight});
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 0 5%;
+    resize: none;
+    overflow: scroll;
+    padding-top: ($navHeight/2) - 8;
+    font-weight: 300;
+    
+    &:focus {
+      outline: none;
+    }
+  
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    //gotta hide windows scrollbars
+    
+    &::-webkit-scrollbar {
+      width: 0 !important
+    }
+  }
+
+  .send {
+    position: fixed;
+    height: $navHeight/1.5;
+    width: $navHeight/1.5;
+    border-radius: 50%;
+    border: 0;
+    background: $red;
+    color: $white;
+    
+    bottom: ($navHeight - ($navHeight/1.5)) / 2;
+    right: ($navHeight - ($navHeight/1.5)) / 2;
+    
+    &:before {
+      content: '';
+      background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/104946/ic_send_white_48dp.png) no-repeat center center;
+    background-size: $navHeight/2.5;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+    }
+    
+    &:focus {
+      outline: none;
+    }
+    
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.message-wrapper {
+  position: relative;
+  overflow: hidden;
+  
+  width: 100%;
+  margin: (($navHeight - ($navHeight/1.5)) / 2) 0;
+  padding: (($navHeight - ($navHeight/1.5)) / 2) 0;
+  
+  .circle-wrapper {
+    height: $navHeight/1.5;
+    width: $navHeight/1.5;
+    border-radius: 50%;
+  }
+  
+  .text-wrapper {
+    padding: ($navHeight - ($navHeight/1.5)) / 2;
+    min-height: $navHeight/1.5;
+    width: 60%;
+    margin: 0 ($navHeight - ($navHeight/1.5)) / 2;
+    box-shadow: 0px 1px 0px 0px rgba(50, 50, 50, 0.3);
+    border-radius: 2px;
+    font-weight: 300;
+    position: relative;
+    /* word-break: break-all; */
+    opacity: 0;
+    
+    &:before {
+      content: '';
+      width: 0;
+      height: 0;
+      border-style: solid;
+    }
+  }
+  
+  &.them {
+    .circle-wrapper, .text-wrapper {
+      background: $red;
+      float: left;
+      color: $white;
+    }
+    
+    .text-wrapper {
+      &:before {
+        border-width: 0 10px 10px 0;
+        border-color: transparent $red transparent transparent;
+        position: absolute;
+        top: 0;
+        left: -9px;
+      }
+    }
+  }
+  
+  &.me {
+    .circle-wrapper, .text-wrapper {
+      background: $orange;
+      float: right;
+      color: $black;
+    }
+    
+    .text-wrapper {
+      background: $white;
+      
+      &:before {
+        border-width: 10px 10px 0 0;
+        border-color: $white transparent transparent transparent;
+        position: absolute;
+        top: 0;
+        right: -9px;
+      }
+    }
+  }
+}
+
+@media (max-width: 560px) {
+  .wrapper {
+    width: 100%;
+    height: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    transform: translateX(0);
+    
+    .inner {
+      height: 100%;
+      height: 100vh;
+    }
+  }
+}
+
+
+class Messenger {
+  constructor() {
+    this.messageList = [];
+    this.deletedList = [];
+    
+    this.me = 1; // completely arbitrary id
+    this.them = 5; // and another one
+    
+    this.onRecieve = (message) => console.log('Recieved: ' + message.text);
+    this.onSend = (message) => console.log('Sent: ' + message.text);
+    this.onDelete = (message) => console.log('Deleted: ' + message.text);
+  }
+  
+  send(text = '') {
+    text = this.filter(text);
+    
+    if (this.validate(text)) {
+      let message = {
+        user: this.me,
+        text: text,
+        time: new Date().getTime()
+      };
+      
+      this.messageList.push(message);
+      
+      this.onSend(message);
+    }
+  }
+  
+  recieve(text = '') {
+    text = this.filter(text);
+    
+    if (this.validate(text)) {
+      let message = {
+        user: this.them,
+        text: text,
+        time: new Date().getTime()
+      };
+      
+      this.messageList.push(message);
+      
+      this.onRecieve(message);
+    }
+  }
+  
+  delete(index) {
+    index = index || (this.messageLength - 1);
+    
+    let deleted = this.messageLength.pop();
+    
+    this.deletedList.push(deleted);
+    this.onDelete(deleted);
+  }
+  
+  filter(input) {
+    let output = input.replace('bad input', 'good output'); // such amazing filter there right?
+    return output;
+  }
+  
+  validate(input) {
+    return !!input.length; // an amazing example of validation I swear.
+  }
+}
+
+class BuildHTML {
+  constructor() {
+    this.messageWrapper = 'message-wrapper';
+    this.circleWrapper = 'circle-wrapper';
+    this.textWrapper = 'text-wrapper';
+    
+    this.meClass = 'me';
+    this.themClass = 'them';
+  }
+  
+  _build(text, who) {
+    return `<div class="${this.messageWrapper} ${this[who + 'Class']}">
+              <div class="${this.circleWrapper} animated bounceIn"></div>
+              <div class="${this.textWrapper}">...</div>
+            </div>`;
+  }
+  
+  me(text) {
+    return this._build(text, 'me');
+  }
+  
+  them(text) {
+    return this._build(text, 'them');
+  }
+}
+
+$(document).ready(function() {
+  let messenger = new Messenger();
+  let buildHTML = new BuildHTML();
+
+  let $input = $('#input');
+  let $send = $('#send');
+  let $content = $('#content');
+  let $inner = $('#inner');
+  
+  function safeText(text) {
+    $content.find('.message-wrapper').last().find('.text-wrapper').text(text);
+  }
+  
+  function animateText() {
+    setTimeout(() => {
+      $content.find('.message-wrapper').last().find('.text-wrapper').addClass('animated fadeIn');
+    }, 350)
+  }
+  
+  function scrollBottom() {
+    $($inner).animate({
+      scrollTop: $($content).offset().top + $($content).outerHeight(true)
+    }, {
+      queue: false,
+      duration: 'ease'
+    });
+  }
+  
+  function buildSent(message) {
+    console.log('sending: ', message.text);
+    
+    $content.append(buildHTML.me(message.text));
+    safeText(message.text);
+    animateText();
+    
+    scrollBottom();
+  }
+  
+  function buildRecieved(message) {
+    console.log('recieving: ', message.text);
+    
+    $content.append(buildHTML.them(message.text));
+    safeText(message.text);
+    animateText();
+    
+    scrollBottom();
+  }
+  
+  function sendMessage() {
+    let text = $input.val();
+    messenger.send(text);
+    
+    $input.val('');
+    $input.focus();
+  }
+  
+  messenger.onSend = buildSent;
+  messenger.onRecieve = buildRecieved;
+  
+  setTimeout(() => {
+    messenger.recieve('Hello there!');
+  }, 1500);
+  
+  setTimeout(() => {
+    messenger.recieve('Do you like this? If so check out more on my page...');
+  }, 5000);
+  
+  setTimeout(() => {
+    messenger.recieve('Or maybe just give it a like!');
+  }, 7500);
+  
+  $input.focus();
+
+  $send.on('click', function(e) {
+    sendMessage();
+  });
+  
+  $input.on('keydown', function(e) {
+    let key = e.which || e.keyCode;
+    
+    if (key === 13) { // enter key
+      e.preventDefault();
+      
+      sendMessage();
+    }
+  });
+});
